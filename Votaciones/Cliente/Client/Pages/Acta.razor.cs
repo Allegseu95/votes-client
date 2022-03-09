@@ -21,6 +21,8 @@ public partial class Acta
 
     public string respuesta;
 
+    public int statusCode { get; set; }
+
 
     public async void RegistrarActa()
     {
@@ -33,13 +35,15 @@ public partial class Acta
         using var response = await this.Http.PostAsJsonAsync("api/actas", acta);
 
         var data = await response.Content.ReadFromJsonAsync<JsonElement>();
+        this.statusCode = (int)response.StatusCode;
 
 
         //this.respuesta = data.GetProperty("Id").ToString();
         //this.respuesta = await data.ToString();
  
         this.respuesta = data.ToString();
-        Console.WriteLine($"resultado de peticion: {this.respuesta}");
+        Console.WriteLine(response);
+        Console.WriteLine($"resultado de peticion: {data}");
     }
 
 }
