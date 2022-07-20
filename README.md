@@ -1,20 +1,14 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# Direcciones
+## Datos
+La aplicación de demostración no ha tomado en cuenta la conexión a datos con **Entity Framework Core (EF core)**
+Deben realizar la conexión a los datos utilizando el mecanismo **'code first'** de EF core para administrar el ciclo de vida de la base de datos con y entidades del dominio con el código en C# utilizando **Migrations**
+Se debe consultar antes de realizar un cambio significativo.
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+## Diseño
+Se debe utilizar el diseño propuesto y siempre consultar en el grupo
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+## Ramas
+Se utilizará la rama main como principal y se realizarán sub ramas de esta para el trabajo. Se harán merges a main a través de un **pull request (PR)** que va a ser evaluado por mi.
+No subir commits sin sus **respectivos tests**.
+No se aceptarán commits que no compilen en su ambiente y en CD
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
-
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)

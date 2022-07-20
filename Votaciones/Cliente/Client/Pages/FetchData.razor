@@ -1,0 +1,30 @@
+﻿@page "/fetchdata"
+@inject HttpClient Http
+
+<PageTitle>Pronóstico del clima</PageTitle>
+
+<MudText Typo="Typo.h1">Pronóstico del clima (Memoria)</MudText>
+
+<MudText Typo="Typo.body1">Sirve para demostrar la traida de datos desde el servicio</MudText>
+
+@if (pronostico == null)
+{
+    <MudText Typo="Typo.caption">Cargando...</MudText>
+}
+else
+{
+    <MudTable Items="@pronostico" Hover="true">
+        <HeaderContent>
+            <MudTh>Fecha</MudTh>
+            <MudTh>Temp. (C)</MudTh>
+            <MudTh>Temp. (F)</MudTh>
+            <MudTh>Resumen</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd >@context.Fecha</MudTd>
+            <MudTd >@context.TemperaturaC</MudTd>
+            <MudTd >@context.TemperaturaF</MudTd>
+            <MudTd >@context.Resumen</MudTd>
+        </RowTemplate>
+    </MudTable>
+}
