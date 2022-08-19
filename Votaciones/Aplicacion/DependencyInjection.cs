@@ -17,6 +17,10 @@ public static class DependencyInjection
         services.AddMediatR(Assembly.GetExecutingAssembly());
         services.AddLogging();
 
+
+        //mi codigo para usar la base de datos creado con code first
+        services.AddDbContext<EscrutinioDbContext>();
+
         //if (bool.Parse(configuration.GetSection("UseInMemoryDatabase").Value))
         //    services.AddDbContext<SGAPContext>(options =>
         //    {

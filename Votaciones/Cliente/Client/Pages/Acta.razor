@@ -1,0 +1,38 @@
+﻿@page "/acta"
+@inject HttpClient Http
+
+
+<PageTitle>Registrar Acta</PageTitle>
+
+<MudText Typo="Typo.h1">Registrar Nueva Acta</MudText>
+
+<MudText Typo="Typo.body1">Registra una nueva acta de la JRV  #@NumeroJRV con #@CantidadVotantesJRV de votantes </MudText>
+
+
+
+@if (respuesta == "1")
+{
+ 
+    <MudText Typo="Typo.body1"> Registro Exitoso: @respuesta </MudText>
+
+}
+else
+{
+       <MudText Typo="Typo.body1"> Registro NO Exitoso: @respuesta </MudText>
+
+}
+    
+
+
+<MudTextField @bind-Value="CantidadVotaciones" Label="Total de Votantes:" Variant="Variant.Text"></MudTextField>
+<MudTextField @bind-Value="VotosBlancos" Label="Votos Blancos" Variant="Variant.Text"></MudTextField>
+<MudTextField @bind-Value="VotosNulos" Label="Votos Nulos" Variant="Variant.Text"></MudTextField>
+<MudTextField @bind-Value="Imagen" Label="URL de Imagen (demo)" Variant="Variant.Text"></MudTextField>
+<MudCheckBox @bind-Checked="@FirmaPresidente" Label="Firma de Presidente" Color="Color.Primary"></MudCheckBox>
+<MudCheckBox @bind-Checked="@FirmaSecretario" Label="Firma de Secretario" Color="Color.Primary"></MudCheckBox>
+
+
+<MudButton Variant="Variant.Filled" OnClick="RegistrarActa">Registrar</MudButton>
+
+
+
