@@ -25,8 +25,12 @@ public partial class EscrutinioDbContext : DbContext
     }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        base.OnConfiguring(optionsBuilder);
-        optionsBuilder.UseSqlServer(conexion);
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseSqlServer(conexion);
+        }
+        //base.OnConfiguring(optionsBuilder);
+        //optionsBuilder.UseSqlServer(conexion);"Server=MSSQLSERVER; Database=votaciones; User Id=userp; Password=aeiou123"
     }
 
     public DbSet<Acta> Acta { get; set; }

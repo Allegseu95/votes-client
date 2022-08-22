@@ -4,7 +4,7 @@
 
 namespace Aplicacion.Migrations
 {
-    public partial class initialmigration : Migration
+    public partial class FrisMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -20,7 +20,7 @@ namespace Aplicacion.Migrations
                     VotosNulos = table.Column<int>(type: "int", nullable: false),
                     FirmaPresidente = table.Column<bool>(type: "bit", nullable: false),
                     FirmaSecretario = table.Column<bool>(type: "bit", nullable: false),
-                    Imagen = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Imagen = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     Estado = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Aplicacion.Migrations
 {
     [DbContext(typeof(EscrutinioDbContext))]
-    [Migration("20220819195012_initial-migration")]
-    partial class initialmigration
+    [Migration("20220822172001_FrisMigration")]
+    partial class FrisMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -47,8 +47,8 @@ namespace Aplicacion.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Imagen")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<int>("VotosBlancos")
                         .HasColumnType("int");
