@@ -2,6 +2,7 @@
 using Aplicacion.Persistencia;
 using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -18,8 +19,6 @@ public static class DependencyInjection
         services.AddLogging();
 
 
-        //mi codigo para usar la base de datos creado con code first
-        services.AddDbContext<EscrutinioDbContext>();
 
         //if (bool.Parse(configuration.GetSection("UseInMemoryDatabase").Value))
         //    services.AddDbContext<SGAPContext>(options =>
@@ -27,12 +26,12 @@ public static class DependencyInjection
         //        options.UseInMemoryDatabase("SGAPInMemory");
         //    });
         //else
-        //    services.AddDbContext<SGAPContext>(options =>
-        //    {
-        //        options.UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll);
-        //        options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-        //    }, ServiceLifetime.Transient);
-        services.AddScoped<Contexto>();
+        services.AddDbContext<EscrutinioDbContext>(options =>
+        {
+            options.UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll);
+            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+        }, ServiceLifetime.Transient);
+        
         services.AddHelper();
         return services;
     }

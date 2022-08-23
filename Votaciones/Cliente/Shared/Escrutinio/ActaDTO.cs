@@ -3,11 +3,11 @@
 namespace Cliente.Shared.Escrutinio;
 
 public record ActaDTO(
-    int CantidadVotantesJRV, 
     int CantidadVotaciones ,
     int VotosBlancos ,
     int VotosNulos ,
     Boolean FirmaPresidente ,
     Boolean FirmaSecretario ,
     string Imagen ,
-    Boolean Estado);
+    Boolean Estado,
+    string Observador);

@@ -9,17 +9,17 @@ namespace Cliente.Server.Controllers;
 [Route("[controller]")]
 public class WeatherForecastController : ApiControllerBase
 {
-    private readonly ILogger<WeatherForecastController> _logger;
+    //private readonly ILogger<WeatherForecastController> _logger;
 
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
-    {
-        _logger = logger;
-    }
+    //public WeatherForecastController(ILogger<WeatherForecastController> logger)
+    //{
+    //    _logger = logger;
+    //}
 
-    [HttpGet]
-    public async Task<ActionResult<IReadOnlyList<PronosticoClimaDto>>> Get()
-    {
-        var resultado = await Mediator.Send(new ObtenerPronosticoClima.Consulta());
-        return Ok(resultado);
-    }
+    //[HttpGet]
+    //public async Task<ActionResult<IReadOnlyList<PronosticoClimaDto>>> Get()
+    //{
+    //    var resultado = await Mediator.Send(new ObtenerPronosticoClima.Consulta());
+    //    return Ok(resultado);
+    //}
 }

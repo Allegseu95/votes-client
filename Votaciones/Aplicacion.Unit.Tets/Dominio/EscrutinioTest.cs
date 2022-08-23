@@ -10,16 +10,6 @@ public class EscrutinioTest
 {
 
     [Fact]
-    public void ObtenerCantidadVotantesJRV_RetornaNumeros()
-    {
-        Acta sut = new() { CantidadVotantesJRV = 5 };
-
-        var resultado = sut.CantidadVotantesJRV;
-
-        Assert.Equal(5, resultado);
-    }
-
-    [Fact]
     public void ObtenerCantidadVotaciones_RetornaNumeros()
     {
         Acta sut = new() { CantidadVotaciones = 5 };

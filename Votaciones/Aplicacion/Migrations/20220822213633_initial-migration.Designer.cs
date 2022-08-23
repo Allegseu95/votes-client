@@ -3,6 +3,7 @@ using Aplicacion.Persistencia;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Aplicacion.Migrations
 {
     [DbContext(typeof(EscrutinioDbContext))]
-    partial class EscrutinioDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220822213633_initial-migration")]
+    partial class initialmigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,6 +34,9 @@ namespace Aplicacion.Migrations
                     b.Property<int>("CantidadVotaciones")
                         .HasColumnType("int");
 
+                    b.Property<int>("CantidadVotantesJRV")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Estado")
                         .HasColumnType("bit");
 
@@ -44,10 +49,6 @@ namespace Aplicacion.Migrations
                     b.Property<string>("Imagen")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("Observador")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("VotosBlancos")
                         .HasColumnType("int");

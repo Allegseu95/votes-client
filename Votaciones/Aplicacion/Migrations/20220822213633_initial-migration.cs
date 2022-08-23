@@ -4,7 +4,7 @@
 
 namespace Aplicacion.Migrations
 {
-    public partial class FrisMigration : Migration
+    public partial class initialmigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

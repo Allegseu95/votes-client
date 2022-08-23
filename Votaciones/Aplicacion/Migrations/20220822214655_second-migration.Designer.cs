@@ -3,6 +3,7 @@ using Aplicacion.Persistencia;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Aplicacion.Migrations
 {
     [DbContext(typeof(EscrutinioDbContext))]
-    partial class EscrutinioDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220822214655_second-migration")]
+    partial class secondmigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,6 +32,9 @@ namespace Aplicacion.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("CantidadVotaciones")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CantidadVotantesJRV")
                         .HasColumnType("int");
 
                     b.Property<bool>("Estado")

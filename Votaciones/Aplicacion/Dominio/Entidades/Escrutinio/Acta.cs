@@ -12,8 +12,7 @@ public partial class Acta : IEntity
     [Key]    
     public int Id { get; set; }
 
-    [Required]
-    public int CantidadVotantesJRV { get; set; }
+   
     [Required]
 
     public int CantidadVotaciones { get; set; }
@@ -27,5 +26,6 @@ public partial class Acta : IEntity
     [StringLength(500)]
     public string? Imagen { get; set; }
     public Boolean Estado { get; set; }
+    public string Observador { get; set; }
 
 }

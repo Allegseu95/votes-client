@@ -29,8 +29,8 @@ public partial class Acta
         this.Estado = FirmaPresidente && FirmaSecretario ? true : false ;
 
         acta = new ActaDTO
-            (CantidadVotantesJRV, CantidadVotaciones, VotosBlancos,VotosNulos, 
-            FirmaPresidente, FirmaSecretario, Imagen, Estado);
+            (CantidadVotaciones, VotosBlancos,VotosNulos, 
+            FirmaPresidente, FirmaSecretario, Imagen, Estado, "id del observador");
      
         using var response = await this.Http.PostAsJsonAsync("api/actas", acta);
 

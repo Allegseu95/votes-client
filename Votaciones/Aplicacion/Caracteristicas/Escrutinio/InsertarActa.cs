@@ -11,14 +11,15 @@ using System.Threading.Tasks;
 namespace Aplicacion.Caracteristicas.Escrutinio;
 public class InsertarActa
 {
-    public record Consulta(int CantidadVotantesJRV,
+    public record Consulta(
     int CantidadVotaciones,
     int VotosBlancos,
     int VotosNulos,
     Boolean FirmaPresidente,
     Boolean FirmaSecretario,
     string Imagen,
-    Boolean Estado) : IRequest<int>;
+    Boolean Estado,
+    string Observador) : IRequest<int>;
 
 
     public class Handler : IRequestHandler<Consulta, int>
