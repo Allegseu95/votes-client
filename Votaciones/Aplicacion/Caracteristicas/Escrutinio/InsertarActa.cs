@@ -36,7 +36,7 @@ public class InsertarActa
         public async Task<int> Handle(Consulta request,
             CancellationToken cancellationToken)
         {
-            await context.Acta.AddAsync(this.mapper.Map<Acta>(request), cancellationToken);
+            await context.Actas.AddAsync(this.mapper.Map<Acta>(request), cancellationToken);
             return await context.SaveChangesAsync(cancellationToken);
         }
     }

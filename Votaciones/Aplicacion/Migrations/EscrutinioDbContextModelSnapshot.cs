@@ -42,7 +42,9 @@ namespace Aplicacion.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Imagen")
+                        .IsRequired()
                         .HasMaxLength(500)
+                        .IsUnicode(true)
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Observador")
@@ -57,7 +59,7 @@ namespace Aplicacion.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Acta");
+                    b.ToTable("Actas");
                 });
 #pragma warning restore 612, 618
         }

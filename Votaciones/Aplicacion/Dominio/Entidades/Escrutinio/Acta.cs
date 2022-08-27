@@ -9,23 +9,13 @@ using System.Threading.Tasks;
 namespace Aplicacion.Dominio.Entidades.Escrutinio;
 public partial class Acta : IEntity
 {
-    [Key]    
     public int Id { get; set; }
-
-   
-    [Required]
-
     public int CantidadVotaciones { get; set; }
-    [Required]
     public int VotosBlancos { get; set; }
-    
-    [Required]
     public int VotosNulos { get; set; }
     public Boolean FirmaPresidente { get; set; }
     public Boolean FirmaSecretario { get; set; }
-    [StringLength(500)]
-    public string? Imagen { get; set; }
+    public string Imagen { get; set; }
     public Boolean Estado { get; set; }
     public string Observador { get; set; }
-
 }

@@ -35,7 +35,7 @@ public class ObtenerActas
             CancellationToken cancellationToken)
         {
             IReadOnlyCollection<ActaDTO> respuesta =
-                await this.context.Acta.ProjectTo<ActaDTO>(this.mapper.ConfigurationProvider)
+                await this.context.Actas.ProjectTo<ActaDTO>(this.mapper.ConfigurationProvider)
                 .ToArrayAsync(cancellationToken);
 
             return (IReadOnlyList<ActaDTO>)respuesta;
