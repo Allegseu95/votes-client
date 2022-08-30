@@ -1,41 +1,76 @@
 ﻿
 using Aplicacion.Dominio.Entidades.Escrutinio;
+using Aplicacion.Helper.Dominio.Comunes;
 using Aplicacion.Persistencia.Configurations;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Aplicacion.Persistencia;
 public partial class EscrutinioDbContext : DbContext
 {
-
-
     public EscrutinioDbContext(DbContextOptions<EscrutinioDbContext> options) : base(options)
     {
-
     }
 
     public EscrutinioDbContext()
     {
-
     }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => base.OnConfiguring(optionsBuilder);
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new ActaConfiguration());
+        modelBuilder.ApplyConfiguration(new CandidatoConfiguration());
+        modelBuilder.ApplyConfiguration(new DetalleActaConfiguration());
+        modelBuilder.ApplyConfiguration(new JRVPapeletaConfiguration());
+        modelBuilder.ApplyConfiguration(new JRVConfiguration());
+        modelBuilder.ApplyConfiguration(new PapeletaConfiguration());
 
         OnModelCreatingPartial(modelBuilder);
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 
-
-
     public virtual DbSet<Acta> Actas { get; set; }
+    public virtual DbSet<Candidato> Candidatos { get; set; }
+    public virtual DbSet<DetalleActa> DetallesActa { get; set; }
+    public virtual DbSet<JRVPapeleta> JRVPapeletas { get; set; }
+    public virtual DbSet<JRV> JRVs { get; set; }
+    public virtual DbSet<Papeleta> Papeletas { get; set; }
 
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        await GestionarAuditoria();
+        return await base.SaveChangesAsync(cancellationToken);  
+    }
 
+    private async Task GestionarAuditoria()
+    {
+        var usuarioActual = "Usuario Prueba";
+
+        foreach (var item in ChangeTracker.Entries<IAuditableEntity>())
+        {
+            switch (item.State)
+            {
+
+                case EntityState.Modified:
+                    item.Entity.Modificado = DateTime.Now;
+                    item.Entity.ModificadoPor = usuarioActual;
+                    break;
+                case EntityState.Added:
+                    item.Entity.Modificado = DateTime.Now;
+                    item.Entity.ModificadoPor = usuarioActual;
+                    item.Entity.Creado = DateTime.Now;
+                    item.Entity.CreadoPor = usuarioActual;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        await Task.CompletedTask;
+
+    }
 }
+
+

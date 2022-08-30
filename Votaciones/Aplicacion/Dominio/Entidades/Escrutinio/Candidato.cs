@@ -1,29 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Aplicacion.Helper.Dominio.Comunes;
 
 namespace Aplicacion.Dominio.Entidades.Escrutinio;
-public partial class Candidato
+public partial class Candidato : IEntity, IAuditableEntity
 {
-    [Key]
-    public int CandidatiId { get; set; }
-
-    [StringLength(100)]
-    public string? Nombre { get; set; }
-    [StringLength(100)]
-    public string? Apellido { get; set; }
-    [StringLength(100)]
-    public string? Genero { get; set; }
-    [StringLength(100)]
+    public int Id { get; set; }
+    public int PapeletaId { get; set; }
+    public string Nombre { get; set; } = string.Empty;
+    public string Apellido { get; set; } = string.Empty;
+    public string Genero { get; set; } = string.Empty;
     public DateTime FechaNacimiento { get; set; }
-
-    [StringLength(100)]
-    public string? Dignidad { get; set; }
-    //posible para cambio en otra tabla y realizar la relacion
-
-    [StringLength(100)]
-    public string? OrganizacionPolitica { get; set; }
+    public string OrganizacionPolitica { get; set; } = string.Empty;
+    public string Imagen { get; set; } = string.Empty;
+    public DateTime Creado { get; set; }
+    public DateTime Modificado { get; set; }
+    public string CreadoPor { get; set; } = string.Empty;
+    public string ModificadoPor { get; set; } = string.Empty;
+    public Papeleta Papeleta { get; set; } = new Papeleta();
+    public List<DetalleActa> DetalleActas { get; set; } = new List<DetalleActa>();
 }

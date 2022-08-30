@@ -1,40 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using Aplicacion.Helper.Dominio.Comunes;
 
 namespace Aplicacion.Dominio.Entidades.Escrutinio;
-public partial class JRV
+public partial class JRV : IEntity, IAuditableEntity
 {
-    [Key]
-    public int JrvId { get; set; }
+    public int Id { get; set; }
     public int Numero { get; set; }
-
-    [StringLength(200)]
-    public string? Tipo { get; set; }
-    
-    [StringLength(200)]
-    public string? Recinto { get; set; }
-
-    [StringLength(100)]
-    public string? ZonaElectoral { get; set; }
-
-    [StringLength(100)]
-    public string? Parroquia { get; set; }
-
-    [StringLength(100)]
-    public string? TipoParroquia { get; set; }
-
-    [StringLength(100)]
-    public string? Canton { get; set; }
-
-    [StringLength(100)]
-    public string? Circunscripcion { get; set; }
-
-    [StringLength(100)]
-    public string? Provincia { get; set; }
-
+    public string Genero { get; set; } = string.Empty;
+    public string DireccionRecinto { get; set; } = string.Empty;
+    public string Recinto { get; set; } = string.Empty;
+    public string ZonaElectoral { get; set; } = string.Empty;
+    public string Parroquia { get; set; } = string.Empty;
+    public string TipoParroquia { get; set; } = string.Empty;
+    public string Canton { get; set; } = string.Empty;
+    public string Circunscripcion { get; set; } = string.Empty;
+    public string Provincia { get; set; } = string.Empty;
+    public int CantidadVotantes { get; set; }
+    public DateTime Creado { get; set; }
+    public DateTime Modificado { get; set; }
+    public string CreadoPor { get; set; } = string.Empty;
+    public string ModificadoPor { get; set; } = string.Empty;
+    public List<JRVPapeleta> JRVPapeletas { get; set; } = new List<JRVPapeleta>();
 }

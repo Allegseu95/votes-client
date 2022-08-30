@@ -5,18 +5,11 @@ using AutoMapper.QueryableExtensions;
 using Cliente.Shared.Escrutinio;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Aplicacion.Caracteristicas.Escrutinio;
 public class ObtenerActas
 {
-
     public record Consulta : IRequest<IReadOnlyList<ActaDTO>>;
-
 
     public class Handler : IRequestHandler<Consulta, IReadOnlyList<ActaDTO>>
     {
@@ -29,8 +22,6 @@ public class ObtenerActas
             this.mapper = mapper;
         }
 
-       
-
         public async Task<IReadOnlyList<ActaDTO>> Handle(Consulta request,
             CancellationToken cancellationToken)
         {
@@ -41,7 +32,6 @@ public class ObtenerActas
             return (IReadOnlyList<ActaDTO>)respuesta;
         }
     }
-
 
     public class MapRespuesta : Profile
     {

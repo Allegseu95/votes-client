@@ -1,13 +1,5 @@
-﻿using Aplicacion.Helper.Dominio.Comunes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Aplicacion.Dominio.Entidades.Escrutinio;
-public partial class JRV : IEntity
+﻿namespace Aplicacion.Dominio.Entidades.Escrutinio;
+public partial class JRV 
 {
-    public int Id { get; }
 
 }

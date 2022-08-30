@@ -6,8 +6,8 @@ namespace Cliente.Client.Pages;
 
 public partial class FetchData
 {
-    private ActaDTO[]? registro;
+    private ActaDTO[]? actas;
 
     protected override async Task OnInitializedAsync() =>
-        this.registro = await this.Http.GetFromJsonAsync<ActaDTO[]>("api/actas");
+        this.actas = await this.Http.GetFromJsonAsync<ActaDTO[]>("api/actas");
 }

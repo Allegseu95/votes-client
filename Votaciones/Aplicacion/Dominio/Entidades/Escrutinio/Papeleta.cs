@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Aplicacion.Helper.Dominio.Comunes;
 
 namespace Aplicacion.Dominio.Entidades.Escrutinio;
-public partial class Papeleta
+public partial class Papeleta : IEntity, IAuditableEntity
 {
-    [Key]
-    public int PapeletaId { get; set; }
-
-    [StringLength(200)]
-    public string? Descripcion { get; set; }
-
+    public int Id { get; set; }
+    public string Codigo { get; set; } = string.Empty;
+    public string Dignidad { get; set; } = string.Empty;
+    public DateTime FechaEleccion { get; set; }
+    public DateTime Creado { get; set; }
+    public DateTime Modificado { get; set; }
+    public string CreadoPor { get; set; } = string.Empty;
+    public string ModificadoPor { get; set; } = string.Empty;
+    public List<Candidato> Candidatos { get; set; } = new List<Candidato>();
+    public List<JRVPapeleta> JRVPapeletas { get; set; } = new List<JRVPapeleta>();
 }

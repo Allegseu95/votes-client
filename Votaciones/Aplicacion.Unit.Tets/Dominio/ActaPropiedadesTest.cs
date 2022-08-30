@@ -1,13 +1,19 @@
 ﻿using Aplicacion.Dominio.Entidades.Escrutinio;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Shouldly;
 
 namespace Aplicacion.Unit.Test.Dominio;
-public class EscrutinioTest
+public class ActaPropiedadesTest
 {
+    [Fact]
+    public void TemperaturaFahrenheit()
+    {
+        var acta = new Acta { CantidadVotaciones=250 };
+        var jrv = new JRV { CantidadVotantes = 350 };
+        var espera = 250;
+        var resultado = acta.CantidadVotaciones;
+
+        resultado.ShouldBe(espera);
+    }
 
     [Fact]
     public void ObtenerCantidadVotaciones_RetornaNumeros()
