@@ -1,7 +1,9 @@
 ﻿using Aplicacion.Dominio.Entidades.Escrutinio;
 using Aplicacion.Persistencia;
 using AutoMapper;
+using FluentValidation;
 using MediatR;
+using static Aplicacion.Caracteristicas.Escrutinio.ObtenerActas;
 
 namespace Aplicacion.Caracteristicas.Escrutinio;
 public class InsertarActa
@@ -24,6 +26,23 @@ public class InsertarActa
         public string ModificadoPor { get; set; } = string.Empty;
 
     }
+
+    public class ActaValidacion : AbstractValidator<Comando>
+    {
+        public ActaValidacion()
+        {
+            RuleFor(x => x.CantidadVotaciones).NotEmpty();
+            RuleFor(x => x.VotosBlancos).NotEmpty();
+            RuleFor(x => x.VotosNulos).NotEmpty();
+            RuleFor(x => x.FirmaPresidente).NotEmpty();
+            RuleFor(x => x.FirmaSecretario).NotEmpty();
+            RuleFor(x => x.Imagen).NotEmpty();
+            RuleFor(x => x.Estado).NotEmpty();
+           // RuleFor(x => x.Observador).NotEmpty();
+
+        }
+    }
+
 
     public class Handler : IRequestHandler<Comando, int>
     {

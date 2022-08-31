@@ -13,7 +13,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-
+	<ItemGroup>
+		<InternalsVisibleTo Include="Aplicacion.Integracion.Test" />
+	</ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Aplicacion\Aplicacion.csproj" />
     <ProjectReference Include="..\Client\Cliente.Client.csproj" />
