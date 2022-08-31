@@ -8,9 +8,9 @@ public partial class MainLayout
     {
         Palette = new Palette
         {
-            Primary = Colors.DeepPurple.Default,
-            Secondary = Colors.Amber.Accent4,
-            AppbarBackground = Colors.DeepPurple.Default
+            Primary = Colors.Teal.Darken2,
+            Secondary = Colors.Teal.Lighten2,
+            AppbarBackground = Colors.Teal.Darken2
         }
 
         //LayoutProperties = new LayoutProperties()
