@@ -10,9 +10,5 @@ public record ActaComandoDTO
      Boolean FirmaPresidente,
      Boolean FirmaSecretario,
      string Imagen,
-     Boolean Estado,
-     DateTime Creado,
-     DateTime Modificado,
-     string CreadoPor,
-     string ModificadoPor
+     Boolean Estado
 );

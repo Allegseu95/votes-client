@@ -25,7 +25,6 @@ public class ActasController : ApiControllerBase
     [HttpPost]
     public async Task<int> Post(InsertarActa.Comando comando)
     {
-        this.logger.LogInformation($"Acta por registrar: {comando}");
         return await this.Mediator.Send(comando);
     }
 }

@@ -20,11 +20,6 @@ public class InsertarActa
         public Boolean FirmaSecretario { get; set; }
         public string Imagen { get; set; } = string.Empty;
         public Boolean Estado { get; set; }
-        public DateTime Creado { get; set; }
-        public DateTime Modificado { get; set; }
-        public string CreadoPor { get; set; } = string.Empty;
-        public string ModificadoPor { get; set; } = string.Empty;
-
     }
 
     public class ActaValidacion : AbstractValidator<Comando>

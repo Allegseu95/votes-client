@@ -9,7 +9,7 @@ public partial class JRVPapeleta : IAuditableEntity
     public DateTime Modificado { get; set; }
     public string CreadoPor { get; set; } = string.Empty;
     public string ModificadoPor { get; set; } = string.Empty;
-    public Acta Acta { get; set; } = new Acta();
+    public Acta Acta { get; set; } 
     public JRV JRV { get; set; } = new JRV();
     public Papeleta Papeleta { get; set; } = new Papeleta();
 }

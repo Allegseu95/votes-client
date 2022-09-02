@@ -16,7 +16,7 @@ public partial class Acta
     
     public string respuesta = string.Empty;
 
-    private int NumeroJRV = 0;
+    private int NumeroJRV = 1;
 
     public int CantidadVotantesJRV = 350;
 
@@ -25,20 +25,16 @@ public partial class Acta
         ActaComandoDTO acta = new ActaComandoDTO
         (
 
-            NumeroJRV + 1,
+            NumeroJRV,
             1,
-            $"Acta-00{NumeroJRV + 1}",
+            $"Acta-00{NumeroJRV}",
             this.CantidadVotaciones,
             this.VotosBlancos,
             this.VotosNulos,
             this.FirmaPresidente,
             this.FirmaSecretario,
             this.Imagen,
-            this.FirmaPresidente && this.FirmaSecretario ? true : false,
-            DateTime.Now,
-            DateTime.Now,
-            "Usuario Actual",
-            "test"
+            this.FirmaPresidente && this.FirmaSecretario ? true : false
         );
 
         using var response = await this.Http.PostAsJsonAsync("api/actas", acta);
@@ -51,8 +47,7 @@ public partial class Acta
         //this.respuesta = await data.ToString();
 
         this.respuesta = data.ToString();
-        Console.WriteLine(response);
-        Console.WriteLine($"resultado de peticion: {data}");
+        Console.WriteLine( $"{response}  \nresultado de la peticion: {data}");
         this.NumeroJRV++;
     }
 
