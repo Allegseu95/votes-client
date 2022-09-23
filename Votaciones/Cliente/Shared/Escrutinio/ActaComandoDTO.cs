@@ -1,5 +1,7 @@
-﻿namespace Cliente.Shared.Escrutinio;
-public record ActaComandoDTO
+﻿using MediatR;
+
+namespace Cliente.Shared.Escrutinio;
+public record ActaComandoDTO  
 (
      int JRVId,
      int PapeletaId,
@@ -11,4 +13,4 @@ public record ActaComandoDTO
      Boolean FirmaSecretario,
      string Imagen,
      Boolean Estado
-);
+): IRequest<int>;

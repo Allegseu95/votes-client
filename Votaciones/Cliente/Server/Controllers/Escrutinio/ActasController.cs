@@ -22,9 +22,9 @@ public class ActasController : ApiControllerBase
         return Ok(resultado);
     }
  
-    [HttpPost]
-    public async Task<int> Post(InsertarActa.Comando comando)
-    {
-        return await this.Mediator.Send(comando);
-    }
+    //[HttpPost]
+    //public async Task<int> Post(InsertarActa.Comando comando)
+    //{
+    //    return await this.Mediator.Send(comando);
+    //}
 }

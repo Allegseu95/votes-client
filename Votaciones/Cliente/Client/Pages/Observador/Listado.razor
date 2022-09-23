@@ -1,0 +1,55 @@
+﻿@page "/observador/listado"
+@inject HttpClient Http
+
+<PageTitle>JRVS Asignadas</PageTitle>
+
+
+<MudContainer Fixed="true" Class="pa-4">
+
+    <MudPaper Width="100%" Elevation="3" Class="d-flex flex-column flex-grow-1 align-xs-center justify-xs-center pa-2">
+        <MudText Align="Align.Center" Typo="Typo.h6">@Titulo</MudText>
+        @if (ListaLlena)
+        {
+            <MudText Align="Align.Center" Typo="Typo.body2">Aquí veras el listado de jrvs que te fueron asginadas a observar</MudText>
+        }
+
+    </MudPaper>
+
+    <MudDivider DividerType="DividerType.Middle" Class="mt-4 mb-2" />
+
+    <MudContainer Width="100%" Class="pa-2">
+        @if (jrvs == null)
+        {
+            <MudText Align="Align.Start" Typo="Typo.caption">Cargando...</MudText>
+
+        }
+        else
+        {
+            @if (ListaLlena)
+            {
+                <MudGrid Spacing="2" Justify="Justify.Center">
+                    @foreach (var jrv in jrvs)
+                    {
+                        <MudItem xs="12">
+                            <MudLink Href="@($"/observador/papeletas/{jrv.Id}")" Underline="Underline.None">
+                                <MudCard Elevation="4">
+                                    <MudCardContent>
+                                        <MudText Align="Align.Center" Typo="Typo.subtitle2">JRV @jrv.Numero - @jrv.Genero</MudText>
+                                        <MudText Align="Align.Center" Typo="Typo.body1">Cantidad de votantes: @jrv.CantidadVotantes</MudText>
+                                    </MudCardContent>
+                                </MudCard>
+                            </MudLink>
+                        </MudItem>
+                    }
+                </MudGrid>
+            }
+            else
+            {
+                <MudText Align="Align.Center" Typo="Typo.body1">@MensajeDatosVacios</MudText>
+            }
+
+        }
+    </MudContainer>
+</MudContainer>
+
+

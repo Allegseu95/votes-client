@@ -1,4 +1,4 @@
-﻿@page "/acta"
+﻿@page "/observador/registroacta/{JRVId:int}/{PapeletaId:int}"
 @inject HttpClient Http
 
 
@@ -45,6 +45,8 @@ else
     <MudCheckBox @bind-Checked="@FirmaPresidente" Label="Firma de Presidente" Color="Color.Primary"></MudCheckBox>
     <MudCheckBox @bind-Checked="@FirmaSecretario" Label="Firma de Secretario" Color="Color.Primary"></MudCheckBox>
     <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="RegistrarActa" Style="width: 100%;">Registrar</MudButton>
+
+
 </MudContainer>
 </MudContainer>
     

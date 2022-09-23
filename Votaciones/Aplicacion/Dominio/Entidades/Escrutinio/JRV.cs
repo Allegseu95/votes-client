@@ -4,6 +4,7 @@ namespace Aplicacion.Dominio.Entidades.Escrutinio;
 public partial class JRV : IEntity, IAuditableEntity
 {
     public int Id { get; set; }
+    public int UsuarioId { get; set; }
     public int Numero { get; set; }
     public string Genero { get; set; } = string.Empty;
     public string DireccionRecinto { get; set; } = string.Empty;
@@ -20,4 +21,5 @@ public partial class JRV : IEntity, IAuditableEntity
     public string CreadoPor { get; set; } = string.Empty;
     public string ModificadoPor { get; set; } = string.Empty;
     public List<JRVPapeleta> JRVPapeletas { get; set; } = new List<JRVPapeleta>();
+    public Usuario Usuario { get; set; } 
 }

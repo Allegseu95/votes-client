@@ -1,5 +1,4 @@
-﻿
-using Aplicacion.Dominio.Entidades.Escrutinio;
+﻿using Aplicacion.Dominio.Entidades.Escrutinio;
 using Aplicacion.Helper.Dominio.Comunes;
 using Aplicacion.Persistencia.Configurations;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +24,7 @@ public partial class EscrutinioDbContext : DbContext
         modelBuilder.ApplyConfiguration(new JRVPapeletaConfiguration());
         modelBuilder.ApplyConfiguration(new JRVConfiguration());
         modelBuilder.ApplyConfiguration(new PapeletaConfiguration());
+        modelBuilder.ApplyConfiguration(new UsuarioConfiguration());
 
         OnModelCreatingPartial(modelBuilder);
     }
@@ -37,6 +37,7 @@ public partial class EscrutinioDbContext : DbContext
     public virtual DbSet<JRVPapeleta> JRVPapeletas { get; set; }
     public virtual DbSet<JRV> JRVs { get; set; }
     public virtual DbSet<Papeleta> Papeletas { get; set; }
+    public virtual DbSet<Usuario> Usuarios { get; set; }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {

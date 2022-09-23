@@ -1,0 +1,41 @@
+﻿@page "/observador/papeletas/{JRVId:int}"
+@inject HttpClient Http
+
+<PageTitle>Papeletas</PageTitle>
+
+
+<MudContainer Fixed="true" Class="pa-4">
+
+    <MudPaper Width="100%" Elevation="3" Class="d-flex flex-column flex-grow-1 align-xs-center justify-xs-center pa-2">
+        <MudText Align="Align.Center" Typo="Typo.h6">Papeletas</MudText>
+        <MudText Align="Align.Center" Typo="Typo.body2">Aquí veras las papeletas a las que se les registrá su respectiva acta</MudText>
+    </MudPaper>
+
+    <MudDivider DividerType="DividerType.Middle" Class="my-4" />
+
+    <MudPaper Elevation="3" Width="100%" Class="pa-2">
+        @if (papeletas == null || papeletas.Count() == 0)
+        {
+            <MudText Align="Align.Center" Typo="Typo.body1">@Aviso</MudText>
+        }
+        else
+        {
+            <MudList>
+                @foreach (var papeleta in papeletas)
+                {
+                    @if (@papeleta.Registrado)
+                    {
+                        <MudListItem Disabled="true" Text="@($"{papeleta.PapeletaDignidad} - REGISTRADO")" Icon="@Icons.Filled.AccountBox" IconColor="Color.Secondary" />
+                    }
+                    else
+                    {
+                        <MudLink Href="@($"/observador/registroacta/{papeleta.JRVId}/{papeleta.PapeletaId}")" Underline="Underline.None">
+                            <MudListItem Text="@papeleta.PapeletaDignidad" Icon="@Icons.Filled.AccountBox" />
+                        </MudLink>
+                    }
+                    <MudDivider />
+                }
+            </MudList>
+        }
+    </MudPaper>
+</MudContainer>

@@ -13,6 +13,9 @@ public partial class JRVConfiguration : IEntityTypeConfiguration<JRV>
             .HasColumnName("JRVId")
             .IsRequired(true);
 
+        entity.Property(e => e.UsuarioId)
+             .IsRequired(true);
+
         entity.Property(e => e.Numero)
             .IsRequired(true);
 
@@ -81,6 +84,12 @@ public partial class JRVConfiguration : IEntityTypeConfiguration<JRV>
             .HasMaxLength(100)
             .IsUnicode(true)
             .IsRequired(false);
+
+        entity.HasOne<Usuario>(e => e.Usuario)
+            .WithMany(e => e.JRVs)
+            .HasForeignKey(e => e.UsuarioId)
+            .OnDelete(DeleteBehavior.Restrict)
+            .HasConstraintName("FK_JRVsUsuarios");
 
         OnConfigurePartial(entity);
     }

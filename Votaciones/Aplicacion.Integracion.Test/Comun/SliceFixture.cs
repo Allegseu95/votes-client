@@ -1,6 +1,4 @@
-﻿
-
-using Aplicacion.Helper.Dominio.Comunes;
+﻿using Aplicacion.Helper.Dominio.Comunes;
 using Aplicacion.Persistencia;
 using AutoMapper;
 using MediatR;

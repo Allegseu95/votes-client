@@ -1,28 +1,29 @@
 ﻿using Aplicacion.Dominio.Entidades.Escrutinio;
 using Aplicacion.Persistencia;
 using AutoMapper;
+using Cliente.Shared.Escrutinio;
 using FluentValidation;
 using MediatR;
-using static Aplicacion.Caracteristicas.Escrutinio.ObtenerActas;
 
 namespace Aplicacion.Caracteristicas.Escrutinio;
 public class InsertarActa
 {
-    public class Comando : IRequest<int>
-    {
-        public int JRVId { get; set; }
-        public int PapeletaId { get; set; }
-        public string Codigo { get; set; } = string.Empty;
-        public int CantidadVotaciones { get; set; }
-        public int VotosBlancos { get; set; }
-        public int VotosNulos { get; set; }
-        public Boolean FirmaPresidente { get; set; }
-        public Boolean FirmaSecretario { get; set; }
-        public string Imagen { get; set; } = string.Empty;
-        public Boolean Estado { get; set; }
-    }
 
-    public class ActaValidacion : AbstractValidator<Comando>
+    //public class Comando : IRequest<int>
+    //{
+    //    public int JRVId { get; set; }
+    //    public int PapeletaId { get; set; }
+    //    public string Codigo { get; set; } = string.Empty;
+    //    public int CantidadVotaciones { get; set; }
+    //    public int VotosBlancos { get; set; }
+    //    public int VotosNulos { get; set; }
+    //    public Boolean FirmaPresidente { get; set; }
+    //    public Boolean FirmaSecretario { get; set; }
+    //    public string Imagen { get; set; } = string.Empty;
+    //    public Boolean Estado { get; set; }
+    //}
+
+    public class ActaValidacion : AbstractValidator<ActaComandoDTO>
     {
         public ActaValidacion()
         {
@@ -39,7 +40,7 @@ public class InsertarActa
     }
 
 
-    public class Handler : IRequestHandler<Comando, int>
+    public class Handler : IRequestHandler<ActaComandoDTO, int>
     {
         private readonly EscrutinioDbContext context;
         private readonly IMapper mapper;
@@ -50,7 +51,7 @@ public class InsertarActa
             this.mapper = mapper;
         }
 
-        public async Task<int> Handle(Comando request,
+        public async Task<int> Handle(ActaComandoDTO request,
             CancellationToken cancellationToken)
         {
             await context.Actas.AddAsync(this.mapper.Map<Acta>(request), cancellationToken);
@@ -62,7 +63,7 @@ public class InsertarActa
     {
         public MapRespuesta()
         {
-            CreateMap<Comando, Acta>();
+            CreateMap<ActaComandoDTO, Acta>();
         }
     }
 }
