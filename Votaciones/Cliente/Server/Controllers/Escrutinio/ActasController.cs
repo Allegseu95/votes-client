@@ -1,4 +1,5 @@
 ﻿using Aplicacion.Caracteristicas.Escrutinio;
+using Aplicacion.Helper.Comunes.Excepciones;
 using Cliente.Server.Controllers.Interfaces;
 using Cliente.Shared.Escrutinio;
 using Microsoft.AspNetCore.Mvc;
@@ -18,13 +19,24 @@ public class ActasController : ApiControllerBase
     public async Task<ActionResult<IReadOnlyList<ActaDTO>>> Get()
     {
         this.logger.LogInformation("Consulta de Actas");
-        var resultado = await Mediator.Send(new ObtenerActas.Consulta());      
+        var resultado = await Mediator.Send(new ObtenerActas.Consulta());
         return Ok(resultado);
     }
- 
-    //[HttpPost]
-    //public async Task<int> Post(InsertarActa.Comando comando)
-    //{
-    //    return await this.Mediator.Send(comando);
-    //}
+
+    [HttpPost]
+    public async Task<ActionResult<bool>> Post([FromBody] ActaComandoDTO comando)
+    {
+        try
+        {
+            var resultado = await Mediator.Send(comando);
+            if (!resultado)
+                return BadRequest(resultado);
+
+            return Created(string.Empty, resultado);
+        }
+        catch (Exception e)
+        {
+            return NotFound(e.Message);
+        }
+    }
 }

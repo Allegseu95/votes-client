@@ -8,7 +8,7 @@ public partial class Listado
 {
     public string Titulo { get; set; }
     public bool ListaLlena { get; set; } = false;
-    public int UserId { get; set; } = 62;
+    public int UserId { get; set; } = 146;
     public string MensajeDatosVacios { get; set; } = MensajesNotificacion.MENSAJE_DATOS_VACIOS;
 
     private JRVDTO[]? jrvs;

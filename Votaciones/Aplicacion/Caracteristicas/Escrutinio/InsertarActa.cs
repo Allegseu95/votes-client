@@ -8,39 +8,26 @@ using MediatR;
 namespace Aplicacion.Caracteristicas.Escrutinio;
 public class InsertarActa
 {
-
-    //public class Comando : IRequest<int>
-    //{
-    //    public int JRVId { get; set; }
-    //    public int PapeletaId { get; set; }
-    //    public string Codigo { get; set; } = string.Empty;
-    //    public int CantidadVotaciones { get; set; }
-    //    public int VotosBlancos { get; set; }
-    //    public int VotosNulos { get; set; }
-    //    public Boolean FirmaPresidente { get; set; }
-    //    public Boolean FirmaSecretario { get; set; }
-    //    public string Imagen { get; set; } = string.Empty;
-    //    public Boolean Estado { get; set; }
-    //}
-
-    public class ActaValidacion : AbstractValidator<ActaComandoDTO>
+    public class ComandoValidacion : AbstractValidator<ActaComandoDTO>
     {
-        public ActaValidacion()
+        public ComandoValidacion()
         {
-            RuleFor(x => x.CantidadVotaciones).NotEmpty();
-            RuleFor(x => x.VotosBlancos).NotEmpty();
-            RuleFor(x => x.VotosNulos).NotEmpty();
-            RuleFor(x => x.FirmaPresidente).NotEmpty();
-            RuleFor(x => x.FirmaSecretario).NotEmpty();
-            RuleFor(x => x.Imagen).NotEmpty();
-            RuleFor(x => x.Estado).NotEmpty();
-           // RuleFor(x => x.Observador).NotEmpty();
-
+            RuleFor(x => x.JRVId).NotEmpty().GreaterThanOrEqualTo(1);
+            RuleFor(x => x.PapeletaId).NotEmpty().GreaterThanOrEqualTo(1);
+            RuleFor(x => x.CantidadVotaciones).GreaterThanOrEqualTo(0);
+            RuleFor(x => x.VotosBlancos).GreaterThanOrEqualTo(0);
+            RuleFor(x => x.VotosNulos).GreaterThanOrEqualTo(0);
+            RuleFor(x => x.Imagen).NotEmpty().MinimumLength(8);
+            RuleFor(x => x.DetalleActas).NotEmpty();
+            RuleForEach(x => x.DetalleActas).ChildRules(det =>
+            {
+                det.RuleFor(x => x.CandidatoId).NotEmpty().GreaterThanOrEqualTo(1);
+                det.RuleFor(x => x.CantidadVotos).GreaterThanOrEqualTo(0);
+            });
         }
     }
 
-
-    public class Handler : IRequestHandler<ActaComandoDTO, int>
+    public class Handler : IRequestHandler<ActaComandoDTO, bool>
     {
         private readonly EscrutinioDbContext context;
         private readonly IMapper mapper;
@@ -51,11 +38,20 @@ public class InsertarActa
             this.mapper = mapper;
         }
 
-        public async Task<int> Handle(ActaComandoDTO request,
+        public async Task<bool> Handle(ActaComandoDTO request,
             CancellationToken cancellationToken)
         {
-            await context.Actas.AddAsync(this.mapper.Map<Acta>(request), cancellationToken);
-            return await context.SaveChangesAsync(cancellationToken);
+            try
+            {
+                await context.Actas.AddAsync(this.mapper.Map<Acta>(request), cancellationToken);
+                await context.SaveChangesAsync(cancellationToken);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error al Registrar => {e.InnerException?.Message}");
+                return false;
+            }
         }
     }
 
@@ -64,6 +60,7 @@ public class InsertarActa
         public MapRespuesta()
         {
             CreateMap<ActaComandoDTO, Acta>();
+            CreateMap<DetalleActaComandoDTO, DetalleActa>();
         }
     }
 }

@@ -9,9 +9,9 @@ public partial class MainLayout
         Palette = new Palette
         {
             Primary = Colors.Teal.Darken2,
-            Secondary = Colors.Teal.Lighten2,
+            Secondary = Colors.Grey.Lighten4,
             AppbarBackground = Colors.Teal.Darken2,
-            Error = Colors.Red.Default
+            Error = Colors.Red.Default,
         }
 
         //LayoutProperties = new LayoutProperties()

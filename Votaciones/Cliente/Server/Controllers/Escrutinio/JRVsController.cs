@@ -18,12 +18,29 @@ public class JRVsController : ApiControllerBase
     }
 
     [HttpGet("{usuarioId:int}")]
-    public async Task<ActionResult<IReadOnlyList<JRVDTO>>> Get(int usuarioId)
+    public async Task<ActionResult<IReadOnlyList<JRVDTO>>> ObtenerListaPorUsuario(int usuarioId)
     {
         try
         {
             var resultado = await Mediator.Send(new ObtenerJRVsPorIdUsuario.Consulta(usuarioId));
             if (!resultado.Any())
+                return NoContent();
+
+            return Ok(resultado);
+        }
+        catch (ExcepcionValidacion e)
+        {
+            return NotFound(e.Message);
+        }
+    }
+
+    [HttpGet("uno/{jrvId:int}")]
+    public async Task<ActionResult<JRVDTO>> ObtenerUno(int jrvId)
+    {
+        try
+        {
+            var resultado = await Mediator.Send(new ObtenerJRVPorIdJRV.Consulta(jrvId));
+            if (resultado == null)
                 return NoContent();
 
             return Ok(resultado);

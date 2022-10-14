@@ -10,6 +10,6 @@ public partial class DetalleActa : IAuditableEntity
     public DateTime Modificado { get; set; }
     public string CreadoPor { get; set; } = string.Empty;
     public string ModificadoPor { get; set; } = string.Empty;
-    public Acta Acta { get; set; } = new Acta();
-    public Candidato Candidato { get; set; } = new Candidato();
+    public Acta Acta { get; set; }
+    public Candidato Candidato { get; set; } 
 }
