@@ -36,7 +36,7 @@ steps:
 - task: PowerShell@2
   inputs:
     targetType: 'inline'
-    script: 'sudo MSSQL_PID=Developer ACCEPT_EULA=Y MSSQL_SA_PASSWORD='$(pass)' /opt/mssql/bin/mssql-conf -n setup'
+    script: 'sudo MSSQL_PID=Developer ACCEPT_EULA=Y MSSQL_SA_PASSWORD= $(pass) /opt/mssql/bin/mssql-conf -n setup'
 
 - task: PowerShell@2
   displayName: "Creación de base de datos SGAPTest"
@@ -45,10 +45,15 @@ steps:
     script: |
       # Write your PowerShell commands here.
       
-      Sqlcmd.exe -P $(pass) create '$(db)'  
-      SqlLocalDB.exe start "SGAPTest"  
-      SqlLocalDB.exe info "SGAPTest"
+      Sqlcmd.exe -P $(pass) create database'$(db)'
       # choco install sql-server-express
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'custom'
+    custom: 'dotnet ef database update --verbose'
+
+
 - task: DotNetCoreCLI@2
   displayName: 'Ejecución de tests'
   inputs:
