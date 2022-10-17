@@ -20,19 +20,19 @@ variables:
   db: 'Escrutinio'
 
 steps:
-- task: DotNetCoreCLI@2
-  displayName: "Restauración de dependencias"
-  inputs:
-    command: 'restore'
-    projects: '$(solution)'
-    feedsToUse: 'select'
+# - task: DotNetCoreCLI@2
+#   displayName: "Restauración de dependencias"
+#   inputs:
+#     command: 'restore'
+#     projects: '$(solution)'
+#     feedsToUse: 'select'
     
-- task: DotNetCoreCLI@2
-  displayName: 'Compilación de solución'
-  inputs:
-    command: 'build'
-    projects: '$(solution)'
-    arguments: '--configuration $(buildConfiguration)'
+# - task: DotNetCoreCLI@2
+#   displayName: 'Compilación de solución'
+#   inputs:
+#     command: 'build'
+#     projects: '$(solution)'
+#     arguments: '--configuration $(buildConfiguration)'
 # - task: PowerShell@2
 #   displayName: "Instalando SQL Server"
 #   inputs:
@@ -46,7 +46,7 @@ steps:
     script: |
       # Write your PowerShell commands here.
       
-      sqlcmd -Q 'create database'$(db)''
+      sqlcmd -Q 'create database $(db)'
       # choco install sql-server-express
 
 - task: DotNetCoreCLI@2
