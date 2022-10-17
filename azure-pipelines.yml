@@ -28,15 +28,6 @@ steps:
 #     command: 'restore'
 #     projects: '$(solution)'
 #     feedsToUse: 'select'
-    
-- task: DotNetCoreCLI@2
-  displayName: 'Compilación de solución'
-  inputs:
-    command: 'build'
-    projects: '$(solution)'
-    arguments: '--configuration $(buildConfiguration)'
-
-
 - task: PowerShell@2
   displayName: 'Descargando la imagen de sql server'
   inputs:
@@ -54,10 +45,15 @@ steps:
   inputs:
     targetType: 'inline'
     script: 'docker ps -a'
-- task: Delay@1
-  displayName: "Esperando contenedor"
+- task: DotNetCoreCLI@2
+  displayName: 'Compilación de solución'
   inputs:
-    delayForMinutes: '1'
+    command: 'build'
+    projects: '$(solution)'
+    arguments: '--configuration $(buildConfiguration)'
+
+
+
 - task: PowerShell@2
   displayName: "Creación de base de datos $(db)"
   inputs:
