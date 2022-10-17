@@ -55,6 +55,10 @@ steps:
     targetType: 'inline'
     script: 'docker ps -a'
 
+- task: Delay@1
+  displayName: "Esperando contenedor"
+  inputs:
+      delayForMinutes: '0.5'
 - task: PowerShell@2
   displayName: "Creación de base de datos $(db)"
   inputs:
