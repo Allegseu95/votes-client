@@ -56,15 +56,15 @@ steps:
   inputs:
     targetType: 'inline'
     script: 'docker ps -a'
-# - task: PowerShell@2
-#   displayName: "Creación de base de datos $(db)"
-#   inputs:
-#     targetType: 'inline'
-#     script: |
-#       # Write your PowerShell commands here.
+
+- task: PowerShell@2
+  displayName: "Creación de base de datos $(db)"
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your PowerShell commands here.
+      docker exec -it sql1 /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P $(pass)  -Q 'create database $(db)'
       
-#       sqlcmd -U 'SA' -P $(pass) -Q 'create database $(db)'
-      # choco install sql-server-express
 
 # - task: DotNetCoreCLI@2
 #   inputs:
