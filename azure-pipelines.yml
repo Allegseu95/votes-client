@@ -16,9 +16,10 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   netVersion: '6.x'
-  pass: 'Y6Of084ft9-'
+  usr: 'SA'
+  pwd: 'Y6Of084ft9-'
   db: 'Escrutinio'
-
+  srv: 'localhost'
 steps:
 # - task: DotNetCoreCLI@2
 #   displayName: "Restauración de dependencias"
@@ -49,7 +50,7 @@ steps:
   displayName: 'Ejecutando la imagen'
   inputs:
     targetType: 'inline'
-    script: 'docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=$(pass)" -p 1433:1433 --name sql1 --hostname sql1 -d mcr.microsoft.com/mssql/server:2022-latest'
+    script: 'docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=$(pwd)" -p 1433:1433 --name sql1 --hostname sql1 -d mcr.microsoft.com/mssql/server:2022-latest'
 
 - task: PowerShell@2
   displayName: 'Confirmar contenedor'
@@ -64,13 +65,13 @@ steps:
     script: |
       # Write your PowerShell commands here.
       # docker exec  sql1
-      /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P $(pass)  -Q 'create database $(db)'
+      /opt/mssql-tools/bin/sqlcmd -S localhost -U $(usr) -P $(pwd)  -Q 'create database $(db)'
       
 
-# - task: DotNetCoreCLI@2
-#   inputs:
-#     command: 'custom'
-#     custom: 'dotnet ef database update --verbose'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'custom'
+    custom: 'dotnet ef database update --verbose --connection "Data Source=$(srv);Initial Catalog=$(db);Persist Security Info=True;User ID=$(usr);Password=$(pwd)"'
 
 
 # - task: DotNetCoreCLI@2
