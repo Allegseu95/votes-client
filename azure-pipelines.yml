@@ -16,6 +16,8 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   netVersion: '6.x'
+  pass: 'Y6Of084ft9-'
+  db: 'Escrutinio'
 
 steps:
 - task: DotNetCoreCLI@2
@@ -31,18 +33,29 @@ steps:
     command: 'build'
     projects: '$(solution)'
     arguments: '--configuration $(buildConfiguration)'
-- task: Bash@3
+- task: PowerShell@2
   inputs:
     targetType: 'inline'
-    script: 'sudo MSSQL_PID=Developer ACCEPT_EULA=Y MSSQL_SA_PASSWORD='Y6Of084ft9-' /opt/mssql/bin/mssql-conf -n setup'
+    script: 'sudo MSSQL_PID=Developer ACCEPT_EULA=Y MSSQL_SA_PASSWORD='$(pass)' /opt/mssql/bin/mssql-conf -n setup'
 
+- task: PowerShell@2
+  displayName: "Creación de base de datos SGAPTest"
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your PowerShell commands here.
+      
+      Sqlcmd.exe -P $(pass) create '$(db)'  
+      SqlLocalDB.exe start "SGAPTest"  
+      SqlLocalDB.exe info "SGAPTest"
+      # choco install sql-server-express
 - task: DotNetCoreCLI@2
   displayName: 'Ejecución de tests'
   inputs:
     command: 'test'
     projects: '**/*Test*.csproj'
     arguments: '--configuration $(buildConfiguration)'
-    
+
 - task: DotNetCoreCLI@2
   displayName: 'Publicación de artefactos'
   inputs:
