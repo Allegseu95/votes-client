@@ -64,10 +64,14 @@ steps:
       /opt/mssql-tools/bin/sqlcmd -S localhost -U $(usr) -P $(pwd)  -Q 'create database $(db)'
       
 
-- task: DotNetCoreCLI@2
+- task: PowerShell@2
+  displayName: 'Actualizar esquema de BD'
   inputs:
-    command: 'custom'
-    custom: 'ef database update --verbose --connection "Data Source=$(srv);Initial Catalog=$(db);Persist Security Info=True;User ID=$(usr);Password=$(pwd)"'
+    targetType: 'inline'
+    script: |
+     '
+     dotnet tool install --global dotnet-ef
+     dotnet ef database update --verbose --connection "Data Source=$(srv);Initial Catalog=$(db);Persist Security Info=True;User ID=$(usr);Password=$(pwd)"'
 
 
 # - task: DotNetCoreCLI@2
