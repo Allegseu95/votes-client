@@ -46,7 +46,7 @@ steps:
     script: |
       # Write your PowerShell commands here.
       
-      sqlcmd -s create database'$(db)'
+      sqlcmd -i create database'$(db)'
       # choco install sql-server-express
 
 - task: DotNetCoreCLI@2
