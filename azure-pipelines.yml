@@ -50,15 +50,15 @@ steps:
   inputs:
     targetType: 'inline'
     script: 'docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=$(pass)" -p 1433:1433 --name sql1 --hostname sql1 -d mcr.microsoft.com/mssql/server:2022-latest'
-# - task: PowerShell@2
-#   displayName: "Creación de base de datos $(db)"
-#   inputs:
-#     targetType: 'inline'
-#     script: |
-#       # Write your PowerShell commands here.
+- task: PowerShell@2
+  displayName: "Creación de base de datos $(db)"
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your PowerShell commands here.
       
-#       sqlcmd -Q 'create database $(db)'
-#       # choco install sql-server-express
+      sqlcmd -U 'SA' -P $(pass) -Q 'create database $(db)'
+      # choco install sql-server-express
 
 # - task: DotNetCoreCLI@2
 #   inputs:
