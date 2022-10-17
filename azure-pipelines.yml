@@ -49,30 +49,30 @@ steps:
       sqlcmd -Q 'create database $(db)'
       # choco install sql-server-express
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'custom'
-    custom: 'dotnet ef database update --verbose'
+# - task: DotNetCoreCLI@2
+#   inputs:
+#     command: 'custom'
+#     custom: 'dotnet ef database update --verbose'
 
 
-- task: DotNetCoreCLI@2
-  displayName: 'Ejecución de tests'
-  inputs:
-    command: 'test'
-    projects: '**/*Test*.csproj'
-    arguments: '--configuration $(buildConfiguration)'
+# - task: DotNetCoreCLI@2
+#   displayName: 'Ejecución de tests'
+#   inputs:
+#     command: 'test'
+#     projects: '**/*Test*.csproj'
+#     arguments: '--configuration $(buildConfiguration)'
 
-- task: DotNetCoreCLI@2
-  displayName: 'Publicación de artefactos'
-  inputs:
-    command: 'publish'
-    publishWebProjects: true
-    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-    modifyOutputPath: false
+# - task: DotNetCoreCLI@2
+#   displayName: 'Publicación de artefactos'
+#   inputs:
+#     command: 'publish'
+#     publishWebProjects: true
+#     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+#     modifyOutputPath: false
 
-- task: PublishPipelineArtifact@1
-  displayName: 'Delivery de paquete'
-  inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)' 
-    artifactName: 'myWebsiteName'
+# - task: PublishPipelineArtifact@1
+#   displayName: 'Delivery de paquete'
+#   inputs:
+#     targetPath: '$(Build.ArtifactStagingDirectory)' 
+#     artifactName: 'myWebsiteName'
 
