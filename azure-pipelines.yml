@@ -66,14 +66,16 @@ steps:
       
 
 - task: PowerShell@2
+  displayName: 'Instalar herramienta ef'
+  inputs:
+    targetType: 'inline'
+    script: 'dotnet tool install --global dotnet-ef'
+
+- task: PowerShell@2
   displayName: 'Actualizar esquema de BD'
   inputs:
     targetType: 'inline'
-    script: |
-     '
-     dotnet tool install --global dotnet-ef
-     dotnet ef database update --verbose --connection "Data Source=$(srv);Initial Catalog=$(db);Persist Security Info=True;User ID=$(usr);Password=$(pwd)"'
-
+    script: 'dotnet ef database update --verbose --connection "Data Source=$(srv);Initial Catalog=$(db);Persist Security Info=True;User ID=$(usr);Password=$(pwd)"'
 
 # - task: DotNetCoreCLI@2
 #   displayName: 'Ejecución de tests'
