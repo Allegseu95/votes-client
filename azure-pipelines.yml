@@ -40,14 +40,25 @@ steps:
 #     script: 'sudo MSSQL_PID=Developer ACCEPT_EULA=Y MSSQL_SA_PASSWORD= $(pass) /opt/mssql/bin/mssql-conf -n setup'
 
 - task: PowerShell@2
-  displayName: "Creación de base de datos $(db)"
+  displayName: 'Descargando la imagen de sql server'
   inputs:
     targetType: 'inline'
-    script: |
-      # Write your PowerShell commands here.
+    script: 'docker pull mcr.microsoft.com/mssql/server:2022-latest'
+
+- task: PowerShell@2
+  displayName: 'Ejecutando la imagen'
+  inputs:
+    targetType: 'inline'
+    script: 'docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=$(pass)" -p 1433:1433 --name sql1 --hostname sql1 -d mcr.microsoft.com/mssql/server:2022-latest'
+# - task: PowerShell@2
+#   displayName: "Creación de base de datos $(db)"
+#   inputs:
+#     targetType: 'inline'
+#     script: |
+#       # Write your PowerShell commands here.
       
-      sqlcmd -Q 'create database $(db)'
-      # choco install sql-server-express
+#       sqlcmd -Q 'create database $(db)'
+#       # choco install sql-server-express
 
 # - task: DotNetCoreCLI@2
 #   inputs:
