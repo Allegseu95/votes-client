@@ -21,7 +21,7 @@ variables:
   db: 'Escrutinio'
   srv: 'localhost'
   tPrj: '$(Build.SourcesDirectory)/Votaciones/Aplicacion/Aplicacion.csproj'
-  sPrj: '$(Build.SourcesDirectory)/Votaciones/Aplicacion/Aplicacion.csproj'
+  sPrj: '$(Build.SourcesDirectory)/Votaciones/Cliente/Server/Cliente.Server.csproj'
 
 steps:
 # - task: DotNetCoreCLI@2
