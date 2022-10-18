@@ -22,7 +22,7 @@ variables:
   srv: 'localhost'
   tPrj: '$(Build.SourcesDirectory)/Votaciones/Aplicacion/Aplicacion.csproj'
   sPrj: '$(Build.SourcesDirectory)/Votaciones/Cliente/Server/Cliente.Server.csproj'
-  sqlsript: '$(Build.ArtifactStagingDirectory)/SQL/migration.sql'
+  sqlScript: '$(Build.ArtifactStagingDirectory)/SQL/migration.sql'
 
 steps:
 
@@ -81,7 +81,7 @@ steps:
   inputs:
     targetType: 'inline'
     # script: 'dotnet ef database update --verbose --connection "Data Source=$(srv);Initial Catalog=$(db);Persist Security Info=True;User ID=$(usr);Password=$(pwd)" -p $(tPrj) -s $(sPrj) --configuration $(BuildConfiguration)'
-    script: 'dotnet ef migrations script --verbose --no-build -p $(tPrj) -s $(sPrj) -o $(sqlscript)  --idempotent --configuration $(BuildConfiguration)'
+    script: 'dotnet ef migrations script --verbose --no-build -p $(tPrj) -s $(sPrj) -o $(sqlScript)  --idempotent --configuration $(BuildConfiguration)'
 
 - task: PowerShell@2
   displayName: "Ejecutando la migración a la base $(db)"
@@ -90,7 +90,7 @@ steps:
     script: |
       # Write your PowerShell commands here.
       # docker exec  sql1
-      /opt/mssql-tools/bin/sqlcmd -S localhost -U $(usr) -P $(pwd)  -S $(sqlscript)
+      /opt/mssql-tools/bin/sqlcmd -S localhost -U $(usr) -P $(pwd)  -S $(sqlScript)
 
 
 - task: DotNetCoreCLI@2
