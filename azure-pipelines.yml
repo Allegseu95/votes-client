@@ -26,23 +26,23 @@ variables:
 
 steps:
 
-# - task: PowerShell@2
-#   displayName: 'Descargando la imagen de sql server'
-#   inputs:
-#     targetType: 'inline'
-#     script: 'docker pull mcr.microsoft.com/mssql/server:2022-latest'
+- task: PowerShell@2
+  displayName: 'Descargando la imagen de sql server'
+  inputs:
+    targetType: 'inline'
+    script: 'docker pull mcr.microsoft.com/mssql/server:2022-latest'
 
-# - task: PowerShell@2
-#   displayName: 'Ejecutando la imagen'
-#   inputs:
-#     targetType: 'inline'
-#     script: 'docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=$(pwd)" -p 1433:1433 --name sql1 --hostname sql1 -d mcr.microsoft.com/mssql/server:2022-latest'
+- task: PowerShell@2
+  displayName: 'Ejecutando la imagen'
+  inputs:
+    targetType: 'inline'
+    script: 'docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=$(pwd)" -p 1433:1433 --name sql1 --hostname sql1 -d mcr.microsoft.com/mssql/server:2022-latest'
 
-# - task: PowerShell@2
-#   displayName: 'Confirmar contenedor'
-#   inputs:
-#     targetType: 'inline'
-#     script: 'docker ps -a'
+- task: PowerShell@2
+  displayName: 'Confirmar contenedor'
+  inputs:
+    targetType: 'inline'
+    script: 'docker ps -a'
 
 
 
@@ -60,65 +60,65 @@ steps:
     fileType: 'json'
     targetFiles: '**/appsettings.json'
 
-# - task: PowerShell@2
-#   displayName: "Creación de base de datos $(db)"
-#   inputs:
-#     targetType: 'inline'
-#     script: |
-#       # Write your PowerShell commands here.
-#       # docker exec  sql1
-#       /opt/mssql-tools/bin/sqlcmd -S localhost -U $(usr) -P $(pwd)  -Q 'create database $(db)'
+- task: PowerShell@2
+  displayName: "Creación de base de datos $(db)"
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your PowerShell commands here.
+      # docker exec  sql1
+      /opt/mssql-tools/bin/sqlcmd -S localhost -U $(usr) -P $(pwd)  -Q 'create database $(db)'
       
-# - task: PowerShell@2
-#   displayName: "Confirmar creación de base de datos $(db)"
-#   inputs:
-#     targetType: 'inline'
-#     script: |
-#       # Write your PowerShell commands here.
-#       # docker exec  sql1
-#       Write-Host 'Bases de datos instaladas'
-#       /opt/mssql-tools/bin/sqlcmd -S localhost -U $(usr) -P $(pwd)  -Q 'SELECT Name from sys.databases;'
-# - task: PowerShell@2
-#   displayName: 'Instalar herramienta ef'
-#   inputs:
-#     targetType: 'inline'
-#     script: 'dotnet tool install --global dotnet-ef'
+- task: PowerShell@2
+  displayName: "Confirmar creación de base de datos $(db)"
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your PowerShell commands here.
+      # docker exec  sql1
+      Write-Host 'Bases de datos instaladas'
+      /opt/mssql-tools/bin/sqlcmd -S localhost -U $(usr) -P $(pwd)  -Q 'SELECT Name from sys.databases;'
+- task: PowerShell@2
+  displayName: 'Instalar herramienta ef'
+  inputs:
+    targetType: 'inline'
+    script: 'dotnet tool install --global dotnet-ef'
 
-# - task: PowerShell@2
-#   displayName: 'Creando script de esquema de BD'
-#   inputs:
-#     targetType: 'inline'
-#     script: 'dotnet ef migrations script --verbose --no-build -p $(tPrj) -s $(sPrj) -o $(sqlScript)  --idempotent --configuration $(BuildConfiguration)'
+- task: PowerShell@2
+  displayName: 'Creando script de esquema de BD'
+  inputs:
+    targetType: 'inline'
+    script: 'dotnet ef migrations script --verbose --no-build -p $(tPrj) -s $(sPrj) -o $(sqlScript)  --idempotent --configuration $(BuildConfiguration)'
 
-# - task: PowerShell@2
-#   displayName: 'Modificando script de BD'
-#   inputs:
-#     targetType: 'inline'
-#     script: '@("Use $(db)") +  (Get-Content $(sqlScript)) | Set-Content $(sqlScript)'
-# - task: PowerShell@2
-#   displayName: "Ejecutando la migración a la base $(db)"
-#   inputs:
-#     targetType: 'inline'
-#     script: |
-#       # Write your PowerShell commands here.
-#       # docker exec  sql1
-#       /opt/mssql-tools/bin/sqlcmd -S localhost -U $(usr) -P $(pwd) -i $(sqlScript)
+- task: PowerShell@2
+  displayName: 'Modificando script de BD'
+  inputs:
+    targetType: 'inline'
+    script: '@("Use $(db)") +  (Get-Content $(sqlScript)) | Set-Content $(sqlScript)'
+- task: PowerShell@2
+  displayName: "Ejecutando la migración a la base $(db)"
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your PowerShell commands here.
+      # docker exec  sql1
+      /opt/mssql-tools/bin/sqlcmd -S localhost -U $(usr) -P $(pwd) -i $(sqlScript)
 
-# - task: PowerShell@2
-#   displayName: "Confirmando la actualización de la migración en $(db)"
-#   inputs:
-#     targetType: 'inline'
-#     script: |
-#       # Write your PowerShell commands here.
-#       # docker exec  sql1
-#       /opt/mssql-tools/bin/sqlcmd -S localhost -U $(usr) -P $(pwd)  -Q 'use $(db) exec sp_tables;'
+- task: PowerShell@2
+  displayName: "Confirmando la actualización de la migración en $(db)"
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your PowerShell commands here.
+      # docker exec  sql1
+      /opt/mssql-tools/bin/sqlcmd -S localhost -U $(usr) -P $(pwd)  -Q 'use $(db) exec sp_tables;'
 
-# - task: DotNetCoreCLI@2
-#   displayName: 'Ejecución de tests'
-#   inputs:
-#     command: 'test'
-#     projects: '**/*Test*.csproj'
-#     arguments: '--configuration $(buildConfiguration)'
+- task: DotNetCoreCLI@2
+  displayName: 'Ejecución de tests'
+  inputs:
+    command: 'test'
+    projects: '**/*Test*.csproj'
+    arguments: '--configuration $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
   displayName: 'Publicación de artefactos'
