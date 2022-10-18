@@ -7,7 +7,7 @@ trigger:
 - main
 
 pool:
-  vmImage: windows-latest
+  vmImage: ubuntu-latest
 
 name: $(MajorVersion).$(MinorVersion).$(Date:yy)$(DayOfYear)$(Rev:.rr)
 
@@ -20,8 +20,8 @@ variables:
   pwd: 'Y6Of084ft9-'
   db: 'Escrutinio'
   srv: 'localhost'
-  tPrj: '$(Build.SourcesDirectory)/Votaciones/Aplicacion/Aplicacion.csprj'
-  sPrj: '$(Build.SourcesDirectory)/Votaciones/Aplicacion/Aplicacion.csprj'
+  tPrj: '$(Build.SourcesDirectory)/Votaciones/Aplicacion/Aplicacion.csproj'
+  sPrj: '$(Build.SourcesDirectory)/Votaciones/Aplicacion/Aplicacion.csproj'
 
 steps:
 # - task: DotNetCoreCLI@2
