@@ -98,7 +98,10 @@ steps:
     script: |
       # Write your PowerShell commands here.
       # docker exec  sql1
-      /opt/mssql-tools/bin/sqlcmd -S localhost -U $(usr) -P $(pwd)  -Q 'sp_tables $(db)'
+      /opt/mssql-tools/bin/sqlcmd -S localhost -U $(usr) -P $(pwd)  -Q 'USE $(db) 
+go
+Sp_tables 
+go'
 # - task: DotNetCoreCLI@2
 #   displayName: 'Ejecución de tests'
 #   inputs:
