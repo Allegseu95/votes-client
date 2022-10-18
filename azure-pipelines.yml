@@ -20,8 +20,8 @@ variables:
   pwd: 'Y6Of084ft9-'
   db: 'Escrutinio'
   srv: 'localhost'
-  tPrj: '/Votaciones/Aplicacion/Aplicacion.csprj'
-  sPrj: '/Votaciones/Aplicacion/Aplicacion.csprj'
+  tPrj: '$(Build.SourcesDirectory)/Votaciones/Aplicacion/Aplicacion.csprj'
+  sPrj: '$(Build.SourcesDirectory)/Votaciones/Aplicacion/Aplicacion.csprj'
 
 steps:
 # - task: DotNetCoreCLI@2
@@ -84,7 +84,7 @@ steps:
   displayName: 'Actualizar esquema de BD'
   inputs:
     targetType: 'inline'
-    script: 'dotnet ef database update --verbose --connection "Data Source=$(srv);Initial Catalog=$(db);Persist Security Info=True;User ID=$(usr);Password=$(pwd)" -p $(tPrj) -s $(sPrj)'
+    script: 'dotnet ef database update --verbose --connection "Data Source=$(srv);Initial Catalog=$(db);Persist Security Info=True;User ID=$(usr);Password=$(pwd)" -p $(tPrj) -s $(sPrj) --configuration $(BuildConfiguration)'
 
 # - task: DotNetCoreCLI@2
 #   displayName: 'Ejecución de tests'
