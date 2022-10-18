@@ -90,8 +90,7 @@ steps:
     script: |
       # Write your PowerShell commands here.
       # docker exec  sql1
-      /opt/mssql-tools/bin/sqlcmd -S localhost -U $(usr) -P $(pwd)  -Q 'use $(db)'
-      /opt/mssql-tools/bin/sqlcmd -S localhost -U $(usr) -P $(pwd)  -i $(sqlScript) -o $(sqlLog)
+      /opt/mssql-tools/bin/sqlcmd -S localhost -U $(usr) -P $(pwd) -Q 'use $(db)' -i $(sqlScript)
 
 - task: PowerShell@2
   displayName: "Confirmando la actualización de la migración en $(db)"
