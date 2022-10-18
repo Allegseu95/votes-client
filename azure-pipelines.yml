@@ -15,7 +15,6 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  netVersion: '6.x'
   usr: 'SA'
   pwd: 'Y6Of084ft9-'
   db: 'Escrutinio'
@@ -128,6 +127,7 @@ steps:
     publishWebProjects: true
     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     modifyOutputPath: false
+    projects: '**/*.csproj'
 
 - task: PublishPipelineArtifact@1
   displayName: 'Delivery de paquete'
