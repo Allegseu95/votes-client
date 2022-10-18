@@ -23,6 +23,7 @@ variables:
   tPrj: '$(Build.SourcesDirectory)/Votaciones/Aplicacion/Aplicacion.csproj'
   sPrj: '$(Build.SourcesDirectory)/Votaciones/Cliente/Server/Cliente.Server.csproj'
   sqlScript: '$(Build.ArtifactStagingDirectory)/SQL/migration.sql'
+  sqlLog: ''$(Build.ArtifactStagingDirectory)/SQL/log.txt'
 
 steps:
 
@@ -90,7 +91,7 @@ steps:
       # Write your PowerShell commands here.
       # docker exec  sql1
       /opt/mssql-tools/bin/sqlcmd -S localhost -U $(usr) -P $(pwd)  -Q 'use $(db)'
-      /opt/mssql-tools/bin/sqlcmd -S localhost -U $(usr) -P $(pwd)  -i $(sqlScript)
+      /opt/mssql-tools/bin/sqlcmd -S localhost -U $(usr) -P $(pwd)  -i $(sqlScript) -o $(sqlLog)
 
 - task: PowerShell@2
   displayName: "Confirmando la actualización de la migración en $(db)"
