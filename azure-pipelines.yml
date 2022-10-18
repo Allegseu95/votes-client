@@ -22,7 +22,7 @@ variables:
   tPrj: '$(Build.SourcesDirectory)/Votaciones/Aplicacion/Aplicacion.csproj'
   sPrj: '$(Build.SourcesDirectory)/Votaciones/Cliente/Server/Cliente.Server.csproj'
   sqlScript: '$(Build.ArtifactStagingDirectory)/SQL/migration.sql'
-  ConnectionStrings.DefaultConnection: 'Data Source=$(srv);Initial Catalog=$(db);Persist Security Info=True;User ID=$(usr);Password=$(pwd)'
+  ConnectionStrings.DefaultConnection: 'Server=$(srv);Database=$(db);Persist Security Info=True;User ID=$(usr);Password=$(pwd)'
 
 steps:
 - task: PowerShell@2
