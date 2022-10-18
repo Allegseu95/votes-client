@@ -44,6 +44,14 @@ steps:
   inputs:
     targetType: 'inline'
     script: 'docker ps -a'
+
+- task: FileTransform@1
+  displayName: "Running File Transform Task"
+  inputs:
+    folderPath: '$(Build.SourcesDirectory)/Votaciones/**/'
+    fileType: 'json'
+    targetFiles: 'appsettings.json'
+
 - task: DotNetCoreCLI@2
   displayName: 'Compilación de solución'
   inputs:
