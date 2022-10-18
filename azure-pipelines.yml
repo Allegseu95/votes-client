@@ -23,7 +23,7 @@ variables:
   tPrj: '$(Build.SourcesDirectory)/Votaciones/Aplicacion/Aplicacion.csproj'
   sPrj: '$(Build.SourcesDirectory)/Votaciones/Cliente/Server/Cliente.Server.csproj'
   sqlScript: '$(Build.ArtifactStagingDirectory)/SQL/migration.sql'
-  sqlLog: ''$(Build.ArtifactStagingDirectory)/SQL/log.txt'
+  sqlLog: '$(Build.ArtifactStagingDirectory)/SQL/log.txt'
 
 steps:
 
