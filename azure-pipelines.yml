@@ -80,7 +80,6 @@ steps:
   displayName: 'Creando script de esquema de BD'
   inputs:
     targetType: 'inline'
-    # script: 'dotnet ef database update --verbose --connection "Data Source=$(srv);Initial Catalog=$(db);Persist Security Info=True;User ID=$(usr);Password=$(pwd)" -p $(tPrj) -s $(sPrj) --configuration $(BuildConfiguration)'
     script: 'dotnet ef migrations script --verbose --no-build -p $(tPrj) -s $(sPrj) -o $(sqlScript)  --idempotent --configuration $(BuildConfiguration)'
 
 - task: PowerShell@2
@@ -92,13 +91,20 @@ steps:
       # docker exec  sql1
       /opt/mssql-tools/bin/sqlcmd -S localhost -U $(usr) -P $(pwd)  -i $(sqlScript)
 
-
-- task: DotNetCoreCLI@2
-  displayName: 'Ejecución de tests'
+- task: PowerShell@2
+  displayName: "Confirmando la actualización de la migración en $(db)"
   inputs:
-    command: 'test'
-    projects: '**/*Test*.csproj'
-    arguments: '--configuration $(buildConfiguration)'
+    targetType: 'inline'
+    script: |
+      # Write your PowerShell commands here.
+      # docker exec  sql1
+      /opt/mssql-tools/bin/sqlcmd -S localhost -U $(usr) -P $(pwd)  -Q 'sp_tables $(db)'
+# - task: DotNetCoreCLI@2
+#   displayName: 'Ejecución de tests'
+#   inputs:
+#     command: 'test'
+#     projects: '**/*Test*.csproj'
+#     arguments: '--configuration $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
   displayName: 'Publicación de artefactos'
