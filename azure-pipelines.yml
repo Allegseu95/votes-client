@@ -72,7 +72,7 @@ steps:
     script: |
       # Write your PowerShell commands here.
       # docker exec  sql1
-      
+      Write-Host 'Bases de datos instaladas'
       /opt/mssql-tools/bin/sqlcmd -S localhost -U $(usr) -P $(pwd)  -Q 'SELECT Name from sys.databases;'
 - task: PowerShell@2
   displayName: 'Instalar herramienta ef'
