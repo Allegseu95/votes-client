@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cliente", "Cliente", "{FB87
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Servicio", "Servicio", "{F5593D53-5C01-4327-B5A2-2D8DDDA0DD36}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aplicacion.Unit.Test", "Aplicacion.Unit.Tets\Aplicacion.Unit.Test.csproj", "{380DA5DB-0B83-47D6-9159-F5CFE5B44AD8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aplicacion.Unit.Test", "Aplicacion.Unit.Test\Aplicacion.Unit.Test.csproj", "{380DA5DB-0B83-47D6-9159-F5CFE5B44AD8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F0B2D8E0-8D27-44A3-B314-74D76D2A84FE}"
 	ProjectSection(SolutionItems) = preProject
