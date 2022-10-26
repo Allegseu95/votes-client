@@ -1,0 +1,117 @@
+﻿@page "/observador/registroacta/{JRVId:int}/{PapeletaId:int}"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@inject ISnackbar Snackbar
+
+<PageTitle>Registrar Acta</PageTitle>
+
+<MudContainer Fixed="true" Class="pa-4">
+    <MudPaper Elevation="4" Class="pa-4 rounded-xl mud-theme-secondary">
+
+        <MudText Typo="Typo.h5" Align="Align.Center" Color="Color.Dark">Registrar Nueva Acta</MudText>
+        <MudText Typo="Typo.caption" Align="Align.Center" Color="Color.Dark">
+            Va a registrar los resultados de las votaciones para la dignidad
+            <strong>@Dignidad</strong> de la mesa <strong>@JRVNombreCompleto</strong> con
+            <strong>@CantidadVotantes</strong> votantes en total
+        </MudText>
+
+        <MudGrid Class="pa-2">
+            <MudItem xs="9" Class="pa-0 d-flex align-center">
+                <MudText Color="Color.Dark">Total de Votos:</MudText>
+            </MudItem>
+            <MudItem xs="3" Class="pa-0 d-flex align-center">
+                <MudNumericField @bind-Value="CantidadVotaciones" Immediate="true"
+                                 Variant="Variant.Outlined" Margin="Margin.Dense" Min="0" Max="@CantidadVotantes" Step="5" />
+            </MudItem>
+
+            <MudItem xs="9" Class="pa-0 d-flex align-center">
+                <MudText Color="Color.Dark">Votos Blancos:</MudText>
+            </MudItem>
+            <MudItem xs="3" Class="pa-0 d-flex align-center">
+                <MudNumericField @bind-Value="VotosBlancos" Immediate="true"
+                                 Variant="Variant.Outlined" Margin="Margin.Dense" Min="0" Max="@CantidadVotantes" Step="5" />
+            </MudItem>
+
+            <MudItem xs="9" Class="pa-0 d-flex align-center">
+                <MudText Color="Color.Dark">Votos Nulos:</MudText>
+            </MudItem>
+            <MudItem xs="3" Class="pa-0 d-flex align-center">
+                <MudNumericField @bind-Value="VotosNulos" Immediate="true"
+                                 Variant="Variant.Outlined" Margin="Margin.Dense" Min="0" Max="@CantidadVotantes" Step="5" />
+            </MudItem>
+        </MudGrid>
+
+        @if (!Candidatos.Any())
+        {
+            <MudText Color="Color.Error">Papeleta sin candidatos configurados</MudText>
+        }
+        else
+        {
+            <MudGrid Class="pa-2">
+                <MudItem xs="2" Class="pa-0 d-flex align-center justify-center">
+                    <MudText Color="Color.Primary">Foto</MudText>
+                </MudItem>
+                <MudItem xs="7" Class="pa-0 d-flex align-center justify-center">
+                    <MudText Color="Color.Primary">Candidato</MudText>
+                </MudItem>
+                <MudItem xs="3" Class="pa-0 d-flex align-center justify-center">
+                    <MudText Color="Color.Primary">Votos</MudText>
+                </MudItem>
+
+                @foreach (var candidato in Candidatos)
+                {
+                    <MudItem xs="2" Class="pa-0 d-flex align-center justify-center">
+                        <MudImage Src="@candidato.Imagen" Width="40" Height="40"
+                          Alt="@candidato.Nombre" Elevation="6" Class="rounded-circle" />
+                    </MudItem>
+
+                    <MudItem xs="7" Class="pa-0 d-flex align-center justify-center">
+                        <MudText Color="Color.Dark"><strong>@candidato.Nombre @candidato.Apellido</strong></MudText>
+                    </MudItem>
+
+                    <MudItem xs="3" Class="pa-0 d-flex align-center">
+                        <MudNumericField @bind-Value="@candidato.Votos" Immediate="true" Variant="Variant.Outlined"
+                                 Margin="Margin.Dense" Min="0" Max="@CantidadVotantes" Step="5" />
+                    </MudItem>
+                }
+            </MudGrid>
+        }
+
+        <MudGrid Class="pa-2">
+            <MudItem xs="9" Class="pa-0 d-flex align-center">
+                <MudText Color="Color.Dark">Firma de Presidente/a:</MudText>
+            </MudItem>
+            <MudItem xs="3" Class="pa-0 d-flex align-center justify-center">
+                <MudCheckBox Class="pa-0" @bind-Checked="@FirmaPresidente" Size="Size.Medium"
+                             UnCheckedColor="Color.Error" Color="Color.Primary"></MudCheckBox>
+            </MudItem>
+
+            <MudItem xs="9" Class="pa-0 d-flex align-center">
+                <MudText Color="Color.Dark">Firma Secretario/a:</MudText>
+            </MudItem>
+            <MudItem xs="3" Class="pa-0 d-flex align-center justify-center">
+                <MudCheckBox Class="pa-0" @bind-Checked="@FirmaSecretario" Size="Size.Medium"
+                             UnCheckedColor="Color.Error" Color="Color.Primary"></MudCheckBox>
+            </MudItem>
+        </MudGrid>
+
+        <InputFile id="fileInput" OnChange="UploadFiles" hidden accept="image/*" capture />
+
+        <MudButton HtmlTag="label" for="fileInput" Class="my-3" FullWidth Size="Size.Medium" Variant="Variant.Outlined"
+                   Color="Color.Info" StartIcon="@Icons.Material.Filled.PhotoCamera">Capturar Evidencia</MudButton>
+
+
+        <MudButton Disabled="@procesando" FullWidth Size="Size.Medium" Variant="Variant.Filled" Color="Color.Primary"
+                   StartIcon="@Icons.Material.Filled.SendAndArchive" OnClick="RegistrarActa">
+            @if (procesando)
+            {
+                <MudProgressCircular Size="Size.Medium" Indeterminate="true" />
+                <MudText>Procesando</MudText>
+            }
+            else
+            {
+                <MudText>REGISTRAR ACTA</MudText>
+            }
+        </MudButton>
+    </MudPaper>
+</MudContainer>

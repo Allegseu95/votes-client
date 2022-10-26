@@ -1,5 +1,6 @@
-﻿@inherits LayoutComponentBase
-<MudThemeProvider Theme="@temarsonalizado"/>
+﻿@using Cliente.Client.Shared.Components
+@inherits LayoutComponentBase
+<MudThemeProvider Theme="@temaPersonalizado"/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
@@ -7,7 +8,7 @@
 <MudLayout>
     <MudAppBar Elevation="1">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@(e => AlternarDrawer())"/>
-        <MudText Typo="Typo.h5" Class="ml-3">Cliente</MudText>
+        <MudText Typo="Typo.h6" Class="ml-3">Elecciones App</MudText>
         <MudSpacer/>
         <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End"/>
     </MudAppBar>
@@ -18,4 +19,3 @@
         @Body
     </MudMainContent>
 </MudLayout>
-

@@ -4,9 +4,9 @@
         <FocusOnNavigate RouteData="@routeData" Selector="h1"/>
     </Found>
     <NotFound>
-        <PageTitle>Not found</PageTitle>
+        <PageTitle>Página no encontrada</PageTitle>
         <LayoutView Layout="@typeof(MainLayout)">
-            <p role="alert">Sorry, there's nothing at this address.</p>
+            <MudText Typo="Typo.h1">Lo sentimos, la página que solicita no existe o está inhabilitada temporalmente.</MudText>
         </LayoutView>
     </NotFound>
 </Router>

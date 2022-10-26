@@ -4,13 +4,14 @@ namespace Cliente.Client.Shared;
 
 public partial class MainLayout
 {
-    private readonly MudTheme temarsonalizado = new()
+    private readonly MudTheme temaPersonalizado = new()
     {
         Palette = new Palette
         {
-            Primary = Colors.DeepPurple.Default,
-            Secondary = Colors.Amber.Accent4,
-            AppbarBackground = Colors.DeepPurple.Default
+            Primary = Colors.Teal.Darken2,
+            Secondary = Colors.Grey.Lighten4,
+            AppbarBackground = Colors.Teal.Darken2,
+            Error = Colors.Red.Default,
         }
 
         //LayoutProperties = new LayoutProperties()
