@@ -15,6 +15,6 @@ public partial class Candidato : IEntity, IAuditableEntity
     public DateTime Modificado { get; set; }
     public string CreadoPor { get; set; } = string.Empty;
     public string ModificadoPor { get; set; } = string.Empty;
-    public Papeleta Papeleta { get; set; } = new Papeleta();
+    public Papeleta Papeleta { get; set; }
     public List<DetalleActa> DetalleActas { get; set; } = new List<DetalleActa>();
 }
