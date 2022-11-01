@@ -1,5 +1,4 @@
 ﻿using Aplicacion.Caracteristicas.Escrutinio;
-using Aplicacion.Helper.Comunes.Excepciones;
 using Cliente.Server.Controllers.Interfaces;
 using Cliente.Shared.Escrutinio;
 using Microsoft.AspNetCore.Mvc;
@@ -24,19 +23,18 @@ public class ActasController : ApiControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<bool>> Post([FromBody] ActaComandoDTO comando)
+    public async Task<ActionResult<RespuestaDTO>> Post([FromBody] ActaComandoDTO comando)
     {
         try
         {
             var resultado = await Mediator.Send(comando);
-            if (!resultado)
-                return BadRequest(resultado);
-
-            return Created(string.Empty, resultado);
+            return !resultado.Estado
+                ? (ActionResult<RespuestaDTO>)BadRequest(resultado)
+                : (ActionResult<RespuestaDTO>)Created(string.Empty, resultado);
         }
         catch (Exception e)
         {
-            return NotFound(e.Message);
+            return NotFound(new RespuestaDTO(e.Message, false, 0));
         }
     }
 }

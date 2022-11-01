@@ -4,9 +4,6 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor;
 using System.Net.Http.Json;
-using System.Text.Json;
-using static MudBlazor.CategoryTypes;
-using static MudBlazor.Colors;
 
 namespace Cliente.Client.Pages.Observador;
 
@@ -49,7 +46,7 @@ public partial class Acta
                 {new ByteArrayContent( ms.GetBuffer()), "\"upload\"", image.Name }
             };
 
-            HttpResponseMessage response = await this.Http.PostAsync("api/upload", content);            
+            HttpResponseMessage response = await this.Http.PostAsync("api/upload", content);
             var result = await response.Content.ReadAsStringAsync();
 
             if (result == "true")
@@ -57,9 +54,9 @@ public partial class Acta
                 this.Imagen = "Url demo de evidencia";
                 MostrarAlerta("Imagen guardada correctamente!", Severity.Info);
             }
-            
+
             if (result == "false")
-            {                
+            {
                 MostrarAlerta("La imagen no se subio correctamente!", Severity.Error);
 
             }
@@ -70,11 +67,11 @@ public partial class Acta
     {
         procesando = true;
 
-        List<DetalleActaComandoDTO> DetalleActas = new List<DetalleActaComandoDTO>();
+        List<DetalleActaComandoDTO> DetallesActa = new List<DetalleActaComandoDTO>();
 
         foreach (var candidato in Candidatos)
         {
-            DetalleActas.Add(new DetalleActaComandoDTO(candidato.Id, candidato.Votos));
+            DetallesActa.Add(new DetalleActaComandoDTO(candidato.Id, candidato.Votos));
         }
 
         var acta = new ActaComandoDTO
@@ -87,34 +84,30 @@ public partial class Acta
             FirmaPresidente,
             FirmaSecretario,
             Imagen,
-            DetalleActas
+            DetallesActa
         );
 
         HttpResponseMessage response = await this.Http.PostAsJsonAsync("api/actas", acta);
-        var result = await response.Content.ReadAsStringAsync();
+        var result = await response.Content.ReadFromJsonAsync<RespuestaDTO>();
 
-        switch (result)
+        if (result != null)
         {
-            case "true":
-                MostrarAlerta(MensajesNotificacion.MENSAJE_ACTA_REGISTRADA, Severity.Success);
-                NavigationManager.NavigateTo($"/observador/papeletas/{JRVId}");
-                break;
-            case "false":
-                MostrarAlerta(MensajesError.MENSAJE_ERROR_INESPERADO, Severity.Error);
-                break;
-            default:
-                int code = (int)response.StatusCode;
-                if (code == 404)
-                {
-                    MostrarAlerta(MensajesError.MENSAJE_ERROR_VALIDACION_ACTA, Severity.Error);
-                }
-                else
-                {
-                    MostrarAlerta(MensajesError.MENSAJE_ERROR_INESPERADO, Severity.Error);
-                }
-                break;
+            switch (result.Estado)
+            {
+                case true:
+                    MostrarAlerta(result.Mensaje, Severity.Success);
+                    NavigationManager.NavigateTo($"/observador/papeletas/{JRVId}");
+                    break;
+                case false:
+                    MostrarAlerta(result.Mensaje, Severity.Error);
+                    break;
+            }
         }
-
+        else
+        {
+            MostrarAlerta(MensajesError.MENSAJE_ERROR_INESPERADO, Severity.Error);
+        }
+        
         procesando = false;
     }
 

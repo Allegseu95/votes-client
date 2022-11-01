@@ -12,4 +12,4 @@ public record ActaComandoDTO
      Boolean FirmaSecretario,
      string Imagen,
      List<DetalleActaComandoDTO> DetalleActas
-) : IRequest<bool>;
+) : IRequest<RespuestaDTO>;

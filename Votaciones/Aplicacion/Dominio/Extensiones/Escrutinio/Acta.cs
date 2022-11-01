@@ -6,17 +6,17 @@ public partial class Acta
         if (!FirmaPresidente || !FirmaSecretario)
             return false;
 
+        if (DetalleActas.Count < 1)
+            return false;
+
         int votosCandidatos = 0;
         foreach (var detalleActa in DetalleActas)
         {
             votosCandidatos += detalleActa.CantidadVotos;
             if (votosCandidatos > CantidadVotaciones)
                 return false;
-        }      
-        
-        if (votosCandidatos + VotosBlancos + VotosNulos != CantidadVotaciones)
-            return false;
+        }
 
-        return true;
+        return votosCandidatos + VotosBlancos + VotosNulos == CantidadVotaciones;
     }
 }

@@ -2,12 +2,22 @@
 using Aplicacion.Persistencia;
 using AutoMapper;
 using Cliente.Shared.Escrutinio;
+using Cliente.Shared.Mensajes;
 using FluentValidation;
 using MediatR;
 
 namespace Aplicacion.Caracteristicas.Escrutinio;
 public class InsertarActa
 {
+    public class ComandoValidacionDetallesActa : AbstractValidator<DetalleActaComandoDTO>
+    {
+        public ComandoValidacionDetallesActa()
+        {
+            RuleFor(x => x.CandidatoId).NotEmpty().GreaterThanOrEqualTo(1);
+            RuleFor(x => x.CantidadVotos).GreaterThanOrEqualTo(0);
+        }
+    }
+
     public class ComandoValidacion : AbstractValidator<ActaComandoDTO>
     {
         public ComandoValidacion()
@@ -19,15 +29,11 @@ public class InsertarActa
             RuleFor(x => x.VotosNulos).GreaterThanOrEqualTo(0);
             RuleFor(x => x.Imagen).NotEmpty().MinimumLength(8);
             RuleFor(x => x.DetalleActas).NotEmpty();
-            RuleForEach(x => x.DetalleActas).ChildRules(det =>
-            {
-                det.RuleFor(x => x.CandidatoId).NotEmpty().GreaterThanOrEqualTo(1);
-                det.RuleFor(x => x.CantidadVotos).GreaterThanOrEqualTo(0);
-            });
+            RuleForEach(x => x.DetalleActas).SetValidator(new ComandoValidacionDetallesActa());
         }
     }
 
-    public class Handler : IRequestHandler<ActaComandoDTO, bool>
+    public class Handler : IRequestHandler<ActaComandoDTO, RespuestaDTO>
     {
         private readonly EscrutinioDbContext context;
         private readonly IMapper mapper;
@@ -38,19 +44,20 @@ public class InsertarActa
             this.mapper = mapper;
         }
 
-        public async Task<bool> Handle(ActaComandoDTO request,
+        public async Task<RespuestaDTO> Handle(ActaComandoDTO request,
             CancellationToken cancellationToken)
         {
             try
             {
                 await context.Actas.AddAsync(this.mapper.Map<Acta>(request), cancellationToken);
-                await context.SaveChangesAsync(cancellationToken);
-                return true;
+                int cantidadCambios = await context.SaveChangesAsync(cancellationToken);
+                return cantidadCambios >= 2
+                    ? new RespuestaDTO(MensajesNotificacion.MENSAJE_ACTA_REGISTRADA, true, cantidadCambios)
+                    : new RespuestaDTO(MensajesNotificacion.MENSAJE_ACTA_REGISTRADA_PROBLEMAS, true, cantidadCambios);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine($"Error al Registrar => {e.InnerException?.Message}");
-                return false;
+                return new RespuestaDTO(MensajesNotificacion.MENSAJE_ACTA_NO_REGISTRADA, false, 0);
             }
         }
     }
