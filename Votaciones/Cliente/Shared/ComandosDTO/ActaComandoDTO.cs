@@ -1,6 +1,7 @@
-﻿using MediatR;
+﻿using Cliente.Shared.EntidadadesDTO;
+using MediatR;
 
-namespace Cliente.Shared.Escrutinio;
+namespace Cliente.Shared.ComandosDTO;
 public record ActaComandoDTO
 (
      int JRVId,
@@ -8,8 +9,8 @@ public record ActaComandoDTO
      int CantidadVotaciones,
      int VotosBlancos,
      int VotosNulos,
-     Boolean FirmaPresidente,
-     Boolean FirmaSecretario,
+     bool FirmaPresidente,
+     bool FirmaSecretario,
      string Imagen,
      List<DetalleActaComandoDTO> DetalleActas
 ) : IRequest<RespuestaDTO>;

@@ -1,6 +1,6 @@
 ﻿using Aplicacion.Caracteristicas.Escrutinio;
 using Bogus;
-using Cliente.Shared.Escrutinio;
+using Cliente.Shared.ComandosDTO;
 using FluentValidation.TestHelper;
 using Shouldly;
 

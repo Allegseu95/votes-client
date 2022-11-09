@@ -1,6 +1,6 @@
 ﻿using Aplicacion.Caracteristicas.Escrutinio;
 using Cliente.Server.Controllers.Interfaces;
-using Cliente.Shared.Escrutinio;
+using Cliente.Shared.EntidadadesDTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cliente.Server.Controllers.Escrutinio;

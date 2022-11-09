@@ -1,7 +1,8 @@
 ﻿using Aplicacion.Dominio.Entidades.Escrutinio;
 using Aplicacion.Persistencia;
 using AutoMapper;
-using Cliente.Shared.Escrutinio;
+using Cliente.Shared.ComandosDTO;
+using Cliente.Shared.EntidadadesDTO;
 using Cliente.Shared.Mensajes;
 using FluentValidation;
 using MediatR;
@@ -53,11 +54,11 @@ public class InsertarActa
                 int cantidadCambios = await context.SaveChangesAsync(cancellationToken);
                 return cantidadCambios >= 2
                     ? new RespuestaDTO(MensajesNotificacion.MENSAJE_ACTA_REGISTRADA, true, cantidadCambios)
-                    : new RespuestaDTO(MensajesNotificacion.MENSAJE_ACTA_REGISTRADA_PROBLEMAS, true, cantidadCambios);
+                    : new RespuestaDTO(MensajesAlerta.MENSAJE_ACTA_REGISTRADA_PROBLEMAS, true, cantidadCambios);
             }
             catch (Exception)
             {
-                return new RespuestaDTO(MensajesNotificacion.MENSAJE_ACTA_NO_REGISTRADA, false, 0);
+                return new RespuestaDTO(MensajesError.MENSAJE_ACTA_NO_REGISTRADA, false, 0);
             }
         }
     }

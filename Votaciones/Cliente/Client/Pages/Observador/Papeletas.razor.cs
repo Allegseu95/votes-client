@@ -1,4 +1,4 @@
-﻿using Cliente.Shared.Escrutinio;
+﻿using Cliente.Shared.EntidadadesDTO;
 using Cliente.Shared.Mensajes;
 using Microsoft.AspNetCore.Components;
 using System.Net.Http.Json;
@@ -9,7 +9,7 @@ public partial class Papeletas
 {
     [Parameter]
     public int JRVId { get; set; }
-    public string Aviso { get; set; } = MensajesNotificacion.MENSAJE_JRV_SIN_PAPELETAS_ASIGNADAS;
+    public string Aviso { get; set; } = MensajesAlerta.MENSAJE_JRV_SIN_PAPELETAS_ASIGNADAS;
 
     private JRVPapeletaDTO[]? papeletas;
 

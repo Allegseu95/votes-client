@@ -1,4 +1,4 @@
-﻿namespace Cliente.Shared.Escrutinio;
+﻿namespace Cliente.Shared.EntidadadesDTO;
 public record JRVDTO(
  int Id,
  int Numero,

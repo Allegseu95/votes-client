@@ -1,4 +1,4 @@
-﻿using Cliente.Shared.Escrutinio;
+﻿using Cliente.Shared.EntidadadesDTO;
 using Cliente.Shared.Mensajes;
 using System.Text.Json;
 
@@ -6,10 +6,10 @@ namespace Cliente.Client.Pages.Observador;
 
 public partial class Listado
 {
-    public string Titulo { get; set; }
+    public string Titulo { get; set; } = string.Empty;
     public bool ListaLlena { get; set; } = false;
-    public int UserId { get; set; } = 146;
-    public string MensajeDatosVacios { get; set; } = MensajesNotificacion.MENSAJE_DATOS_VACIOS;
+    public int UserId { get; set; } = 308;
+    public string MensajeDatosVacios { get; set; } = MensajesAlerta.MENSAJE_DATOS_VACIOS;
 
     private JRVDTO[]? jrvs;
 
@@ -26,11 +26,15 @@ public partial class Listado
                 {
                     PropertyNameCaseInsensitive = true
                 });
-                Titulo = jrvs[0].Recinto;
-                ListaLlena = true;
+
+                if (jrvs != null)
+                {
+                    Titulo = jrvs[0].Recinto;
+                    ListaLlena = true;
+                }
                 break;
             case 204:
-                Titulo = MensajesNotificacion.MENSAJE_REGISTROS_VACIOS;                
+                Titulo = MensajesAlerta.MENSAJE_REGISTROS_VACIOS;
                 jrvs = new JRVDTO[0];
                 break;
             case 404:

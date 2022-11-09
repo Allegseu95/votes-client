@@ -1,9 +1,7 @@
 ﻿using Aplicacion.Caracteristicas.Escrutinio;
 using Aplicacion.Helper.Comunes.Excepciones;
-using Aplicacion.Helper.Comunes.Modelos;
 using Cliente.Server.Controllers.Interfaces;
-using Cliente.Shared.Escrutinio;
-using Cliente.Shared.Mensajes;
+using Cliente.Shared.EntidadadesDTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cliente.Server.Controllers.Escrutinio;

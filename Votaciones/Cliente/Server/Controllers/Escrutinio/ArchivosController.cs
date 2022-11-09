@@ -1,30 +1,21 @@
-﻿using Aplicacion.Caracteristicas.Escrutinio;
-using Cliente.Server.Controllers.Interfaces;
+﻿using Cliente.Server.Controllers.Interfaces;
 using Cliente.Shared.ComandosDTO;
 using Cliente.Shared.EntidadadesDTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cliente.Server.Controllers.Escrutinio;
 
-public class ActasController : ApiControllerBase
+public class ArchivosController : ApiControllerBase
 {
-    private readonly ILogger<ActasController> logger;
+    private readonly ILogger<ArchivosController> logger;
 
-    public ActasController(ILogger<ActasController> logger)
+    public ArchivosController(ILogger<ArchivosController> logger)
     {
         this.logger = logger;
     }
 
-    [HttpGet]
-    public async Task<ActionResult<IReadOnlyList<ActaDTO>>> Get()
-    {
-        this.logger.LogInformation("Consulta de Actas");
-        var resultado = await Mediator.Send(new ObtenerActas.Consulta());
-        return Ok(resultado);
-    }
-
     [HttpPost]
-    public async Task<ActionResult<RespuestaDTO>> Post([FromBody] ActaComandoDTO comando)
+    public async Task<ActionResult<RespuestaDTO>> Post([FromBody] ArchivoComandoDTO comando)
     {
         try
         {
