@@ -3,7 +3,7 @@ using Aplicacion.Dominio.Entidades.Escrutinio;
 using Aplicacion.Integracion.Test.Comun;
 using Aplicacion.Integracion.Test.Comun.Factory;
 using Bogus;
-using Cliente.Shared.Escrutinio;
+using Cliente.Shared.EntidadadesDTO;
 using Shouldly;
 
 namespace Aplicacion.Integracion.Test.Caracteristicas.Escrutinio;

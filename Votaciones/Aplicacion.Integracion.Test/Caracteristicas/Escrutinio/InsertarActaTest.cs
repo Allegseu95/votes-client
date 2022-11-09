@@ -1,7 +1,8 @@
 ﻿using Aplicacion.Integracion.Test.Comun;
 using Aplicacion.Integracion.Test.Comun.Factory;
 using Bogus;
-using Cliente.Shared.Escrutinio;
+using Cliente.Shared.ComandosDTO;
+using Cliente.Shared.EntidadadesDTO;
 using Cliente.Shared.Mensajes;
 using Microsoft.EntityFrameworkCore;
 using Shouldly;
@@ -121,7 +122,7 @@ public class InsertarActaTest
         var sut = await sliceFixture.SendAsync(comando);
 
         sut.ShouldBeOfType<RespuestaDTO>();
-        sut.Mensaje.ShouldBe(MensajesNotificacion.MENSAJE_ACTA_NO_REGISTRADA);
+        sut.Mensaje.ShouldBe(MensajesError.MENSAJE_ACTA_NO_REGISTRADA);
         sut.Estado.ShouldBe(false);
         sut.CantidadCambios.ShouldBe(0);
     }
@@ -165,7 +166,7 @@ public class InsertarActaTest
         var sut = await sliceFixture.SendAsync(comando);
 
         sut.ShouldBeOfType<RespuestaDTO>();
-        sut.Mensaje.ShouldBe(MensajesNotificacion.MENSAJE_ACTA_NO_REGISTRADA);
+        sut.Mensaje.ShouldBe(MensajesError.MENSAJE_ACTA_NO_REGISTRADA);
         sut.Estado.ShouldBe(false);
         sut.CantidadCambios.ShouldBe(0);
     }
@@ -208,7 +209,7 @@ public class InsertarActaTest
         var sut = await sliceFixture.SendAsync(comando);
 
         sut.ShouldBeOfType<RespuestaDTO>();
-        sut.Mensaje.ShouldBe(MensajesNotificacion.MENSAJE_ACTA_NO_REGISTRADA);
+        sut.Mensaje.ShouldBe(MensajesError.MENSAJE_ACTA_NO_REGISTRADA);
         sut.Estado.ShouldBe(false);
         sut.CantidadCambios.ShouldBe(0);
     }
@@ -251,7 +252,7 @@ public class InsertarActaTest
         var sut = await sliceFixture.SendAsync(comando);
 
         sut.ShouldBeOfType<RespuestaDTO>();
-        sut.Mensaje.ShouldBe(MensajesNotificacion.MENSAJE_ACTA_NO_REGISTRADA);
+        sut.Mensaje.ShouldBe(MensajesError.MENSAJE_ACTA_NO_REGISTRADA);
         sut.Estado.ShouldBe(false);
         sut.CantidadCambios.ShouldBe(0);
     }
@@ -294,7 +295,7 @@ public class InsertarActaTest
         var sut = await sliceFixture.SendAsync(comando);
 
         sut.ShouldBeOfType<RespuestaDTO>();
-        sut.Mensaje.ShouldBe(MensajesNotificacion.MENSAJE_ACTA_NO_REGISTRADA);
+        sut.Mensaje.ShouldBe(MensajesError.MENSAJE_ACTA_NO_REGISTRADA);
         sut.Estado.ShouldBe(false);
         sut.CantidadCambios.ShouldBe(0);
     }
@@ -334,7 +335,7 @@ public class InsertarActaTest
         var sut = await sliceFixture.SendAsync(comando);
 
         sut.ShouldBeOfType<RespuestaDTO>();
-        sut.Mensaje.ShouldBe(MensajesNotificacion.MENSAJE_ACTA_NO_REGISTRADA);
+        sut.Mensaje.ShouldBe(MensajesError.MENSAJE_ACTA_NO_REGISTRADA);
         sut.Estado.ShouldBe(false);
         sut.CantidadCambios.ShouldBe(0);
     }
@@ -368,7 +369,7 @@ public class InsertarActaTest
         var sut = await sliceFixture.SendAsync(comando);
 
         sut.ShouldBeOfType<RespuestaDTO>();
-        sut.Mensaje.ShouldBe(MensajesNotificacion.MENSAJE_ACTA_NO_REGISTRADA);
+        sut.Mensaje.ShouldBe(MensajesError.MENSAJE_ACTA_NO_REGISTRADA);
         sut.Estado.ShouldBe(false);
         sut.CantidadCambios.ShouldBe(0);
     }
@@ -404,7 +405,7 @@ public class InsertarActaTest
         var sut = await sliceFixture.SendAsync(comando);
 
         sut.ShouldBeOfType<RespuestaDTO>();
-        sut.Mensaje.ShouldBe(MensajesNotificacion.MENSAJE_ACTA_NO_REGISTRADA);
+        sut.Mensaje.ShouldBe(MensajesError.MENSAJE_ACTA_NO_REGISTRADA);
         sut.Estado.ShouldBe(false);
         sut.CantidadCambios.ShouldBe(0);
     }
@@ -434,7 +435,7 @@ public class InsertarActaTest
         var sut = await sliceFixture.SendAsync(comando);
 
         sut.ShouldBeOfType<RespuestaDTO>();
-        sut.Mensaje.ShouldBe(MensajesNotificacion.MENSAJE_ACTA_NO_REGISTRADA);
+        sut.Mensaje.ShouldBe(MensajesError.MENSAJE_ACTA_NO_REGISTRADA);
         sut.Estado.ShouldBe(false);
         sut.CantidadCambios.ShouldBe(0);
     }
@@ -458,7 +459,7 @@ public class InsertarActaTest
         var sut = await sliceFixture.SendAsync(comando);
 
         sut.ShouldBeOfType<RespuestaDTO>();
-        sut.Mensaje.ShouldBe(MensajesNotificacion.MENSAJE_ACTA_NO_REGISTRADA);
+        sut.Mensaje.ShouldBe(MensajesError.MENSAJE_ACTA_NO_REGISTRADA);
         sut.Estado.ShouldBe(false);
         sut.CantidadCambios.ShouldBe(0);
     }

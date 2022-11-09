@@ -2,7 +2,7 @@
 using Aplicacion.Persistencia;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Cliente.Shared.Escrutinio;
+using Cliente.Shared.EntidadadesDTO;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

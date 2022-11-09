@@ -1,7 +1,7 @@
 ﻿using Aplicacion.Dominio.Entidades.Escrutinio;
 using Aplicacion.Persistencia;
 using AutoMapper;
-using Cliente.Shared.Escrutinio;
+using Cliente.Shared.EntidadadesDTO;
 using FluentValidation;
 using MediatR;
 

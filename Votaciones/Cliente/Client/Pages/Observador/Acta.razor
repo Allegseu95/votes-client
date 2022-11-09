@@ -95,10 +95,20 @@
             </MudItem>
         </MudGrid>
 
-        <InputFile id="fileInput" OnChange="UploadFiles" hidden accept="image/*" capture />
+        <InputFile id="fileInput" OnChange="SubirImagen" hidden accept="image/*" capture />
 
-        <MudButton HtmlTag="label" for="fileInput" Class="my-3" FullWidth Size="Size.Medium" Variant="Variant.Outlined"
-                   Color="Color.Info" StartIcon="@Icons.Material.Filled.PhotoCamera">Capturar Evidencia</MudButton>
+        <MudButton Disabled="@subiendo" HtmlTag="label" for="fileInput" Class="my-3" FullWidth Size="Size.Medium"
+                   Variant="Variant.Outlined" Color="Color.Info" StartIcon="@Icons.Material.Filled.PhotoCamera">
+            @if (subiendo)
+            {
+                <MudProgressCircular Size="Size.Medium" Indeterminate="true" />
+                <MudText>Subiendo</MudText>
+            }
+            else
+            {
+                <MudText>Capturar Evidencia</MudText>
+            }
+        </MudButton>
 
 
         <MudButton Disabled="@procesando" FullWidth Size="Size.Medium" Variant="Variant.Filled" Color="Color.Primary"

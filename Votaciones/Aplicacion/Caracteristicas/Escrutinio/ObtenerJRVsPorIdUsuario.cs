@@ -2,7 +2,7 @@
 using Aplicacion.Helper.Comunes.Mappings;
 using Aplicacion.Persistencia;
 using AutoMapper;
-using Cliente.Shared.Escrutinio;
+using Cliente.Shared.EntidadadesDTO;
 using FluentValidation;
 using MediatR;
 

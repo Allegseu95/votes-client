@@ -1,4 +1,4 @@
-﻿namespace Cliente.Shared.Escrutinio;
+﻿namespace Cliente.Shared.ComandosDTO;
 public record DetalleActaComandoDTO
 (
      int CandidatoId,

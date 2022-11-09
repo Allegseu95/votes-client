@@ -1,4 +1,5 @@
-﻿using Cliente.Shared.Escrutinio;
+﻿using Cliente.Shared.ComandosDTO;
+using Cliente.Shared.EntidadadesDTO;
 using Cliente.Shared.Mensajes;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -25,46 +26,65 @@ public partial class Acta
     public JRVDTO? JRV { get; set; }
     public List<CandidatoDTO> Candidatos { get; set; } = new List<CandidatoDTO>();
 
-
-    IList<IBrowserFile> files = new List<IBrowserFile>();
     private bool procesando = false;
+    private bool subiendo = false;
+    private long maxFileSize = 1024 * 1024 * 8;
 
-    public async Task UploadFiles(InputFileChangeEventArgs e)
+    public async Task SubirImagen(InputFileChangeEventArgs e)
     {
-        foreach (var file in e.GetMultipleFiles())
-        {
-            files.Add(file);
-        }
+        subiendo = true;
 
-        var image = files.FirstOrDefault();
+        var image = e.GetMultipleFiles().FirstOrDefault();
 
-        if (image != null)
+        if (image is not null)
         {
-            var ms = new MemoryStream();
-            var content = new MultipartFormDataContent
+            var fileContent = new StreamContent(image.OpenReadStream(maxAllowedSize: maxFileSize));
+
+            ArchivoComandoDTO archivo = new()
             {
-                {new ByteArrayContent( ms.GetBuffer()), "\"upload\"", image.Name }
+                Path = $"J{JRVId}P{PapeletaId}",
+                Nombre = image.Name,
+                Contenido = Convert.ToBase64String(await fileContent.ReadAsByteArrayAsync()),
+                Tamano = (int)image.Size,
             };
 
-            HttpResponseMessage response = await this.Http.PostAsync("api/upload", content);
-            var result = await response.Content.ReadAsStringAsync();
+            HttpResponseMessage response = await this.Http.PostAsJsonAsync("api/archivos", archivo);
+            var result = await response.Content.ReadFromJsonAsync<RespuestaDTO>();
 
-            if (result == "true")
+            if (result != null)
             {
-                this.Imagen = "Url demo de evidencia";
-                MostrarAlerta("Imagen guardada correctamente!", Severity.Info);
+                switch (result.Estado)
+                {
+                    case true:
+                        MostrarAlerta(MensajesNotificacion.MENSAJE_IMAGEN_GUARDADA, Severity.Success);
+                        Imagen = result.Mensaje;
+                        break;
+                    case false:
+                        MostrarAlerta(result.Mensaje, Severity.Error);
+                        break;
+                }
             }
-
-            if (result == "false")
+            else
             {
-                MostrarAlerta("La imagen no se subio correctamente!", Severity.Error);
-
+                MostrarAlerta(MensajesError.MENSAJE_ERROR_INESPERADO, Severity.Error);
             }
         }
+        else
+        {
+            MostrarAlerta(MensajesAlerta.MENSAJE_IMAGEN_PROBLEMAS, Severity.Warning);
+        }
+
+        subiendo = false;
     }
 
     public async Task RegistrarActa()
     {
+        if (Imagen == string.Empty)
+        {
+            MostrarAlerta(MensajesAlerta.MENSAJE_IMAGEN_NO_SELECCIONADA, Severity.Warning);
+            return;
+        }
+
         procesando = true;
 
         List<DetalleActaComandoDTO> DetallesActa = new List<DetalleActaComandoDTO>();
@@ -107,7 +127,7 @@ public partial class Acta
         {
             MostrarAlerta(MensajesError.MENSAJE_ERROR_INESPERADO, Severity.Error);
         }
-        
+
         procesando = false;
     }
 
@@ -115,10 +135,18 @@ public partial class Acta
 
     protected override async Task OnInitializedAsync()
     {
-        this.Candidatos = await this.Http.GetFromJsonAsync<List<CandidatoDTO>>($"api/candidatos/{PapeletaId}");
-        this.Dignidad = Candidatos.Any() ? Candidatos.FirstOrDefault().PapeletaDignidad : "No Registrada";
+        var result = await Http.GetFromJsonAsync<List<CandidatoDTO>>($"api/candidatos/{PapeletaId}");
+        if (result is not null)
+        {
+            this.Candidatos = result;
+            this.Dignidad = Candidatos.First().PapeletaDignidad;
+        }
+
         this.JRV = await this.Http.GetFromJsonAsync<JRVDTO>($"api/jrvs/uno/{JRVId}");
-        this.CantidadVotantes = JRV.CantidadVotantes;
-        this.JRVNombreCompleto = $"{JRV.Numero} - {JRV.Genero}";
+        if (JRV is not null)
+        {
+            this.CantidadVotantes = JRV.CantidadVotantes;
+            this.JRVNombreCompleto = $"{JRV.Numero} - {JRV.Genero}";
+        }
     }
 }
