@@ -1,4 +1,4 @@
-﻿using Aplicacion.Caracteristicas.Escrutinio;
+﻿ using Aplicacion.Caracteristicas.Escrutinio;
 using FluentValidation.TestHelper;
 using Shouldly;
 
