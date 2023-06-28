@@ -60,6 +60,7 @@ stages:
               # Write your PowerShell commands here.
               
               SqlLocalDB.exe create $(db)  
+              SqlLocalDB.exe sare $(db)  
               SqlLocalDB.exe start $(db)  
               SqlLocalDB.exe info $(db)
               # choco install sql-server-express
@@ -80,6 +81,7 @@ stages:
           inputs:
             TaskType: 'sqlQuery'
             SqlFile: '$(sqlScript)'
+            TargetMethod: 'server'
             ExecuteInTransaction: true
             ServerName: '(localdb)\MSSQLLocalDB'
             DatabaseName: '$(db)'
