@@ -64,6 +64,7 @@ stages:
               # SqlLocalDB.exe share $(db)  
               SqlLocalDB.exe start MSSQLLocalDB
               sqlcmd -S '$(srv)' -Q 'CREATE DATABASE $(db)'
+              sqlcmd -S '$(srv)'  -Q 'use $(db) exec sp_tables;'
               # choco install sql-server-express
 
 
