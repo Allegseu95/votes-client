@@ -69,7 +69,12 @@ stages:
             targetType: 'inline'
             script: |
              'dotnet tool install --global dotnet-ef'
-             'dotnet ef migrations script --idempotent --verbose --no-build -p $(tPrj) -s $(sPrj) -o $(sqlScript)  --idempotent --configuration $(BuildConfiguration)'
+             
+        - task: PowerShell@2
+          displayName: 'Crear script'
+          inputs:
+            targetType: 'inline'
+            script: 'dotnet ef migrations script --verbose --no-build -p $(tPrj) -s $(sPrj) -o $(sqlScript)  --idempotent --configuration $(BuildConfiguration)'    
         - task: SqlDacpacDeploymentOnMachineGroup@0
           displayName: "Pubicación de esquema de BD"
           inputs:
