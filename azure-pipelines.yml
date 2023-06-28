@@ -21,7 +21,7 @@ variables:
   srv: 'localhost'
   tPrj: '$(Build.SourcesDirectory)/Votaciones/Aplicacion/Aplicacion.csproj'
   sPrj: '$(Build.SourcesDirectory)/Votaciones/Cliente/Server/Cliente.Server.csproj'
-  sqlScript: '$(Build.SourcesDirectory)/SQL/migration.sql' 
+  sqlScript: '$(Build.SourcesDirectory)\SQL\migration.sql' 
   # '$(Build.ArtifactStagingDirectory)/SQL/migration.sql'
   ConnectionStrings.DefaultConnection: 'Data Source=$(srv);Initial Catalog=$(db);User ID=$(usr);Password=$(pwd);TrustServerCertificate=True'
 
@@ -32,12 +32,12 @@ stages:
     - job: build
       displayName: 'Compilación'
       steps:
-        - task: DotNetCoreCLI@2
-          displayName: 'Restauración de paquetes'
-          inputs:
-            command: 'restore'
-            projects: '$(solution)'
-            feedsToUse: 'select'
+        # - task: DotNetCoreCLI@2
+        #   displayName: 'Restauración de paquetes'
+        #   inputs:
+        #     command: 'restore'
+        #     projects: '$(solution)'
+        #     feedsToUse: 'select'
         - task: VSBuild@1
           displayName: 'Compilación - $(Build.BuildNumber)'
           inputs:
