@@ -106,7 +106,7 @@ stages:
         - task: CopyFiles@2
           inputs:
             Contents: '$(sqlScript)'
-            TargetFolder: '$(build.artifactstagingdirectory)'
+            TargetFolder: '$(build.artifactstagingdirectory)\drop'
   
 #  - stage: deploytest
 #    displayName: 'Deploy a entorno de Test'
