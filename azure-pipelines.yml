@@ -64,8 +64,6 @@ stages:
               # SqlLocalDB.exe share $(db)  
               SqlLocalDB.exe start MSSQLLocalDB
               sqlcmd -S '$(srv)' -Q 'CREATE DATABASE $(db)'
-              sqlcmd -S '$(srv)'  -Q 'use $(db) exec sp_tables;'
-              # choco install sql-server-express
 
 
         - task: PowerShell@2
@@ -98,14 +96,14 @@ stages:
 
               sqlcmd -S '$(srv)'  -Q 'use $(db) exec sp_tables;'
 
-        # - task: DotNetCoreCLI@2
-        #   displayName: 'Ejecución de tests'
-        #   inputs:
-        #     command: 'test'
-        #     projects: '**\*.Test.csproj'
-        #     testRunTitle: 'Build Test'
-        #     workingDirectory: '$(System.DefaultWorkingDirectory)'
-        #     arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+        - task: DotNetCoreCLI@2
+          displayName: 'Ejecución de tests'
+          inputs:
+            command: 'test'
+            projects: '**\*.Test.csproj'
+            testRunTitle: 'Build Test'
+            workingDirectory: '$(System.DefaultWorkingDirectory)'
+            arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
 
   
 #  - stage: deploytest
