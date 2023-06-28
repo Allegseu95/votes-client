@@ -75,6 +75,16 @@ stages:
           inputs:
             targetType: 'inline'
             script: 'dotnet ef migrations script --verbose --no-build -p $(tPrj) -s $(sPrj) -o $(sqlScript)  --idempotent --configuration $(BuildConfiguration)'    
+        - task: CopyFiles@2
+          inputs:
+            Contents: '$(sqlScript)'
+            TargetFolder: '$(build.artifactstagingdirectory)\'
+        - task: PublishBuildArtifacts@1
+          displayName: 'Publicación Web'
+          inputs:
+            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+            ArtifactName: 'drop'
+            publishLocation: 'Container'
         - task: SqlDacpacDeploymentOnMachineGroup@0
           displayName: "Pubicación de esquema de BD"
           inputs:
@@ -103,10 +113,8 @@ stages:
             workingDirectory: '$(System.DefaultWorkingDirectory)'
             arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
 
-        - task: CopyFiles@2
-          inputs:
-            Contents: '$(sqlScript)'
-            TargetFolder: '$(build.artifactstagingdirectory)\drop'
+       
+
   
 #  - stage: deploytest
 #    displayName: 'Deploy a entorno de Test'
