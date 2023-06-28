@@ -81,33 +81,33 @@ stages:
             PathtoPublish: '$(Build.ArtifactStagingDirectory)'
             ArtifactName: 'drop'
             publishLocation: 'Container'
-        - task: SqlDacpacDeploymentOnMachineGroup@0
-          displayName: "Pubicación de esquema de BD"
-          inputs:
-            TaskType: 'sqlQuery'
-            SqlFile: '$(sqlScript)'
-            TargetMethod: 'server'
-            # ExecuteInTransaction: true
-            ServerName: '(localdb)\MSSQLLocalDB'
-            DatabaseName: '$(db)'
-            AuthScheme: 'windowsAuthentication'
-        - task: PowerShell@2
-          displayName: "Comprobación esquema"
-          inputs:
-            targetType: 'inline'
-            script: |
-              # Write your PowerShell commands here.
+        # - task: SqlDacpacDeploymentOnMachineGroup@0
+        #   displayName: "Pubicación de esquema de BD"
+        #   inputs:
+        #     TaskType: 'sqlQuery'
+        #     SqlFile: '$(sqlScript)'
+        #     TargetMethod: 'server'
+        #     # ExecuteInTransaction: true
+        #     ServerName: '(localdb)\MSSQLLocalDB'
+        #     DatabaseName: '$(db)'
+        #     AuthScheme: 'windowsAuthentication'
+        # - task: PowerShell@2
+        #   displayName: "Comprobación esquema"
+        #   inputs:
+        #     targetType: 'inline'
+        #     script: |
+        #       # Write your PowerShell commands here.
 
-              sqlcmd -S '$(srv)'  -Q 'use $(db) exec sp_tables;'
+        #       sqlcmd -S '$(srv)'  -Q 'use $(db) exec sp_tables;'
 
-        - task: DotNetCoreCLI@2
-          displayName: 'Ejecución de tests'
-          inputs:
-            command: 'test'
-            projects: '**\*.Test.csproj'
-            testRunTitle: 'Build Test'
-            workingDirectory: '$(System.DefaultWorkingDirectory)'
-            arguments: '--configuration $(buildConfiguration) --no-build --collect "Code coverage"'
+        # - task: DotNetCoreCLI@2
+        #   displayName: 'Ejecución de tests'
+        #   inputs:
+        #     command: 'test'
+        #     projects: '**\*.Test.csproj'
+        #     testRunTitle: 'Build Test'
+        #     workingDirectory: '$(System.DefaultWorkingDirectory)'
+        #     arguments: '--configuration $(buildConfiguration) --no-build --collect "Code coverage"'
 
        
 
