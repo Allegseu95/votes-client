@@ -85,7 +85,7 @@ stages:
             TaskType: 'sqlQuery'
             SqlFile: '$(sqlScript)'
             TargetMethod: 'server'
-            ExecuteInTransaction: true
+            # ExecuteInTransaction: true
             ServerName: '(localdb)\MSSQLLocalDB'
             DatabaseName: '$(db)'
             AuthScheme: 'windowsAuthentication'
