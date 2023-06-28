@@ -60,10 +60,9 @@ stages:
             script: |
               # Write your PowerShell commands here.
               
-              SqlLocalDB.exe create $(db)  
-              SqlLocalDB.exe share $(db)  
-              SqlLocalDB.exe start $(db)  
-              SqlLocalDB.exe info 
+              # SqlLocalDB.exe create $(db)  
+              # SqlLocalDB.exe share $(db)  
+              SqlLocalDB.exe start $(srv)
               sqlcmd -S '$(srv)' -Q 'CREATE DATABASE $(db)'
               # choco install sql-server-express
 
