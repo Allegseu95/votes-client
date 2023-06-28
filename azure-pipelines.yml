@@ -67,8 +67,7 @@ stages:
           displayName: 'Instalar herramienta ef'
           inputs:
             targetType: 'inline'
-            script: |
-             'dotnet tool install --global dotnet-ef'
+            script: 'dotnet tool install --global dotnet-ef'
              
         - task: PowerShell@2
           displayName: 'Crear script'
