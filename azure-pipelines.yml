@@ -32,26 +32,26 @@ stages:
     - job: build
       displayName: 'Compilación'
       steps:
-        - checkout: none
-        # - task: DotNetCoreCLI@2
-        #   displayName: 'Restauración de paquetes'
-        #   inputs:
-        #     command: 'restore'
-        #     projects: '$(solution)'
-        #     feedsToUse: 'select'
-        # - task: VSBuild@1
-        #   displayName: 'Compilación - $(Build.BuildNumber)'
-        #   inputs:
-        #     solution: '$(solution)'
-        #     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)" /p:Version=$(Build.BuildNumber)'
-        #     platform: '$(buildPlatform)'
-        #     configuration: '$(buildConfiguration)'
-        # - task: PublishBuildArtifacts@1
-        #   displayName: 'Publicación Web'
-        #   inputs:
-        #     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        #     ArtifactName: 'drop'
-        #     publishLocation: 'Container'
+        # - checkout: none
+        - task: DotNetCoreCLI@2
+          displayName: 'Restauración de paquetes'
+          inputs:
+            command: 'restore'
+            projects: '$(solution)'
+            feedsToUse: 'select'
+        - task: VSBuild@1
+          displayName: 'Compilación - $(Build.BuildNumber)'
+          inputs:
+            solution: '$(solution)'
+            msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)" /p:Version=$(Build.BuildNumber)'
+            platform: '$(buildPlatform)'
+            configuration: '$(buildConfiguration)'
+        - task: PublishBuildArtifacts@1
+          displayName: 'Publicación Web'
+          inputs:
+            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+            ArtifactName: 'drop'
+            publishLocation: 'Container'
         
         - task: PowerShell@2
           displayName: "Creación de base de datos $(db)"
@@ -68,27 +68,27 @@ stages:
               # choco install sql-server-express
 
 
-        # - task: PowerShell@2
-        #   displayName: 'Instalar herramienta ef'
-        #   inputs:
-        #     targetType: 'inline'
-        #     script: 'dotnet tool install --global dotnet-ef'
+        - task: PowerShell@2
+          displayName: 'Instalar herramienta ef'
+          inputs:
+            targetType: 'inline'
+            script: 'dotnet tool install --global dotnet-ef'
              
-        # - task: PowerShell@2
-        #   displayName: 'Crear script'
-        #   inputs:
-        #     targetType: 'inline'
-        #     script: 'dotnet ef migrations script --verbose --no-build -p $(tPrj) -s $(sPrj) -o $(sqlScript)  --idempotent --configuration $(BuildConfiguration)'    
-        # - task: SqlDacpacDeploymentOnMachineGroup@0
-        #   displayName: "Pubicación de esquema de BD"
-        #   inputs:
-        #     TaskType: 'sqlQuery'
-        #     SqlFile: '$(sqlScript)'
-        #     TargetMethod: 'server'
-        #     ExecuteInTransaction: true
-        #     ServerName: '(localdb)\MSSQLLocalDB'
-        #     DatabaseName: '$(db)'
-        #     AuthScheme: 'windowsAuthentication'
+        - task: PowerShell@2
+          displayName: 'Crear script'
+          inputs:
+            targetType: 'inline'
+            script: 'dotnet ef migrations script --verbose --no-build -p $(tPrj) -s $(sPrj) -o $(sqlScript)  --idempotent --configuration $(BuildConfiguration)'    
+        - task: SqlDacpacDeploymentOnMachineGroup@0
+          displayName: "Pubicación de esquema de BD"
+          inputs:
+            TaskType: 'sqlQuery'
+            SqlFile: '$(sqlScript)'
+            TargetMethod: 'server'
+            ExecuteInTransaction: true
+            ServerName: '(localdb)\MSSQLLocalDB'
+            DatabaseName: '$(db)'
+            AuthScheme: 'windowsAuthentication'
 
         # - task: DotNetCoreCLI@2
         #   displayName: 'Ejecución de tests'
