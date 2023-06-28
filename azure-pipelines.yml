@@ -60,7 +60,7 @@ stages:
               # Write your PowerShell commands here.
               
               SqlLocalDB.exe create $(db)  
-              SqlLocalDB.exe sare $(db)  
+              SqlLocalDB.exe share $(db)  
               SqlLocalDB.exe start $(db)  
               SqlLocalDB.exe info 
               # sqlcmd -S $(srv)
