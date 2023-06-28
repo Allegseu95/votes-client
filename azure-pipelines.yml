@@ -19,8 +19,8 @@ variables:
   pwd: 'Y6Of084ft9-'
   db: 'Escrutinio'
   srv: '(localdb)\MSSQLLocalDB'
-  tPrj: '$(Build.SourcesDirectory)/Votaciones/Aplicacion/Aplicacion.csproj'
-  sPrj: '$(Build.SourcesDirectory)/Votaciones/Cliente/Server/Cliente.Server.csproj'
+  tPrj: '$(Build.SourcesDirectory)\Votaciones\Aplicacion\Aplicacion.csproj'
+  sPrj: '$(Build.SourcesDirectory)\Votaciones\Cliente\Server\Cliente.Server.csproj'
   sqlScript: '$(Build.SourcesDirectory)\SQL\migration.sql' 
   # '$(Build.ArtifactStagingDirectory)/SQL/migration.sql'
   ConnectionStrings.DefaultConnection: 'Data Source=$(srv);Initial Catalog=$(db);User ID=$(usr);Password=$(pwd);TrustServerCertificate=True'
@@ -32,6 +32,7 @@ stages:
     - job: build
       displayName: 'Compilación'
       steps:
+        - checkout: none
         # - task: DotNetCoreCLI@2
         #   displayName: 'Restauración de paquetes'
         #   inputs:
@@ -63,7 +64,7 @@ stages:
               SqlLocalDB.exe share $(db)  
               SqlLocalDB.exe start $(db)  
               SqlLocalDB.exe info 
-              # sqlcmd -S $(srv)
+              sqlcmd -S '$(srv)' -Q 'CREATE DATABASE $(db)'
               # choco install sql-server-express
 
 
