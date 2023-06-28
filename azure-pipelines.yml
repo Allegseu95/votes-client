@@ -12,11 +12,11 @@ pool:
 name: $(MajorVersion).$(MinorVersion).$(Date:yy)$(DayOfYear)$(Rev:.rr)
 
 variables:
-  solution: '**/*.sln'
+  solution: '**\*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   usr: 'SA'
-  db: 'Escrutinio'
+  db: 'Votaciones'
   srv: '(localdb)\MSSQLLocalDB'
   tPrj: '$(Build.SourcesDirectory)\Votaciones\Aplicacion\Aplicacion.csproj'
   sPrj: '$(Build.SourcesDirectory)\Votaciones\Cliente\Server\Cliente.Server.csproj'
@@ -30,16 +30,9 @@ stages:
     - job: build
       displayName: 'Compilación'
       steps:
-        # - checkout: none
-        # - task: DotNetCoreCLI@2
-        #   displayName: 'Restauración de paquetes'
-        #   inputs:
-        #     command: 'restore'
-        #     projects: '$(solution)'
-        #     feedsToUse: 'select'
         - task: NuGetToolInstaller@1
-
         - task: NuGetCommand@2
+          displayName: 'Restaurando paquetes'
           inputs:
             restoreSolution: '$(solution)'
         - task: VSBuild@1
@@ -49,32 +42,30 @@ stages:
             msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)" /p:Version=$(Build.BuildNumber)'
             platform: '$(buildPlatform)'
             configuration: '$(buildConfiguration)'
-        - task: PublishBuildArtifacts@1
-          displayName: 'Publicación Web'
+        - task: FileTransform@1
+          displayName: "Transformando appsettingsw"
           inputs:
-            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-            ArtifactName: 'drop'
-            publishLocation: 'Container'
-        
+            folderPath: '$(Pipeline.Workspace)\'
+            fileType: 'json'
+            targetFiles: '**\appsettings.json'
+
+        - task: CopyFiles@2
+          inputs:
+            Contents: '$(Pipeline.Workspace)\**\appsettings.json'
+            TargetFolder: '$(Build.ArtifactStagingDirectory)\'
         - task: PowerShell@2
           displayName: "Creación de base de datos $(db)"
           inputs:
             targetType: 'inline'
             script: |
               # Write your PowerShell commands here.
-              
-              # SqlLocalDB.exe create $(db)  
-              # SqlLocalDB.exe share $(db)  
               SqlLocalDB.exe start MSSQLLocalDB
               sqlcmd -S '$(srv)' -Q 'CREATE DATABASE $(db)'
-
-
         - task: PowerShell@2
           displayName: 'Instalar herramienta ef'
           inputs:
             targetType: 'inline'
             script: 'dotnet tool install --global dotnet-ef'
-             
         - task: PowerShell@2
           displayName: 'Crear script'
           inputs:
@@ -137,7 +128,7 @@ stages:
             - task: DownloadPipelineArtifact@2
               inputs:
                 buildType: 'current'
-                itemPattern: '**/*.sql'
+                itemPattern: '**\*.sql'
                 targetPath: '$(Pipeline.Workspace)'
             - task: SqlAzureDacpacDeployment@1
               inputs:
