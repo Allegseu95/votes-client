@@ -16,13 +16,11 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   usr: 'SA'
-  pwd: 'Y6Of084ft9-'
-  db: 'Escrutinio'
+  db: 'Votaciones'
   srv: '(localdb)\MSSQLLocalDB'
   tPrj: '$(Build.SourcesDirectory)\Votaciones\Aplicacion\Aplicacion.csproj'
   sPrj: '$(Build.SourcesDirectory)\Votaciones\Cliente\Server\Cliente.Server.csproj'
   sqlScript: '$(Build.SourcesDirectory)\SQL\migration.sql' 
-  # '$(Build.ArtifactStagingDirectory)/SQL/migration.sql'
   ConnectionStrings.DefaultConnection: 'Data Source=$(srv);Initial Catalog=$(db);User ID=$(usr);Password=$(pwd);TrustServerCertificate=True'
 
 stages:
@@ -106,124 +104,34 @@ stages:
             arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
 
   
-#  - stage: deploytest
-#    displayName: 'Deploy a entorno de Test'
-#    dependsOn: buildandtest
-#    condition: succeeded()
-#    jobs:
-#    - deployment: 'deploydbtest'
-#      environment: 'Test'
-#      displayName: Deploy BD a Testing
-#      strategy:
-#       runOnce:
-#         deploy:
-#           steps:
-#             - checkout: none
-#             - task: DownloadPipelineArtifact@2
-#               inputs:
-#                 buildType: 'current'
-#                 itemPattern: '**/*.dacpac'
-#                 targetPath: '$(Pipeline.Workspace)'
-#             - task: SqlAzureDacpacDeployment@1
-#               inputs:
-#                 azureSubscription: 'Azure - CEDIA -2022(a8d00b60-3452-491a-b34e-10f6dcd564bc)'
-#                 AuthenticationType: 'server'
-#                 ServerName: '$(srv)'
-#                 DatabaseName: 'SGAPTest'
-#                 SqlUsername: '$(usr)'
-#                 SqlPassword: '$(pwd)'
-#                 deployType: 'DacpacTask'
-#                 DeploymentAction: 'Publish'
-#                 DacpacFile: '$(Pipeline.Workspace)/**/BaseDatos.dacpac'
-#                 IpDetectionMethod: 'AutoDetect'
-#    - deployment: deploywebtest
-#      environment: 'Test'
-#      displayName: Deploy Server a Testing
-#      dependsOn: deploydbtest
-#      condition: succeeded()
-#      variables:
-#       AppName: Sistema de Gestión Académica - Postgrado (Pruebas)
-#       AzureAd.ClientId: "$(clientid)"
-#       ConnectionStrings.DefaultConnection: 'Server=tcp:diitdbs.database.windows.net,1433;Initial Catalog=SGAPTest;Persist Security Info=False;User ID=$(usr);Password=$(pwd);MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
-#      strategy:
-#       runOnce:
-#         deploy:
-#           steps:
-#           - checkout: none
-#           - task: DownloadPipelineArtifact@2
-#             inputs:
-#                 buildType: 'current'
-#                 itemPattern: '**/*.zip'
-#                 targetPath: '$(Pipeline.Workspace)'
-#           - task: AzureRmWebAppDeployment@4
-#             inputs:
-#               ConnectionType: 'AzureRM'
-#               azureSubscription: 'Azure - CEDIA -2022(a8d00b60-3452-491a-b34e-10f6dcd564bc)'
-#               appType: 'webApp'
-#               WebAppName: 'sgap'
-#               deployToSlotOrASE: true
-#               ResourceGroupName: 'rg-sgap'
-#               SlotName: 'sgaptest'
-#               packageForLinux: '$(Pipeline.Workspace)/**/Cliente.zip'
-#               enableXmlVariableSubstitution: true
-#               JSONFiles: '**/appsettings.json'
+ - stage: deploytest
+   displayName: 'Deploy a entorno de Test'
+   dependsOn: buildandtest
+   condition: succeeded()
+   jobs:
+   - deployment: 'deploydbtest'
+     environment: 'Test'
+     displayName: Deploy BD a Testing
+     strategy:
+      runOnce:
+        deploy:
+          steps:
+            - checkout: none
+            - task: DownloadPipelineArtifact@2
+              inputs:
+                buildType: 'current'
+                itemPattern: '**/*.sql'
+                targetPath: '$(Pipeline.Workspace)'
+            - task: SqlAzureDacpacDeployment@1
+              inputs:
+                azureSubscription: 'votaciones'
+                AuthenticationType: 'server'
+                ServerName: 'dbsrv-dev-diit-estudiantes.database.windows.net'
+                DatabaseName: '$(db)'
+                SqlUsername: 'diit.admin.dev.sql'
+                SqlPassword: $(pwd)
+                deployType: 'SqlTask'
+                SqlFile: '$(sqlScript)'
+                IpDetectionMethod: 'AutoDetect'
 
-# - task: FileTransform@1
-#   displayName: "Running File Transform Task"
-#   inputs:
-#     folderPath: '$(Pipeline.Workspace)/'
-#     fileType: 'json'
-#     targetFiles: '**/appsettings.json'
-
-# - task: CopyFiles@2
-#   inputs:
-#     Contents: '$(Pipeline.Workspace)/**/appsettings.json'
-#     TargetFolder: '$(Build.ArtifactStagingDirectory)/'
-
-
-
-# - task: PowerShell@2
-#   displayName: 'Modificando script de BD'
-#   inputs:
-#     targetType: 'inline'
-#     script: '@("Use $(db)") +  (Get-Content $(sqlScript)) | Set-Content $(sqlScript)'
-# - task: PowerShell@2
-#   displayName: "Ejecutando la migración a la base $(db)"
-#   inputs:
-#     targetType: 'inline'
-#     script: |
-#       # Write your PowerShell commands here.
-#       # docker exec  sql1
-#       /opt/mssql-tools/bin/sqlcmd -S localhost -U $(usr) -P $(pwd) -i $(sqlScript)
-
-# - task: PowerShell@2
-#   displayName: "Confirmando la actualización de la migración en $(db)"
-#   inputs:
-#     targetType: 'inline'
-#     script: |
-#       # Write your PowerShell commands here.
-#       # docker exec  sql1
-#       /opt/mssql-tools/bin/sqlcmd -S localhost -U $(usr) -P $(pwd)  -Q 'use $(db) exec sp_tables;'
-
-# - task: DotNetCoreCLI@2
-#   displayName: 'Ejecución de tests'
-#   inputs:
-#     command: 'test'
-#     projects: '**/*Test*.csproj'
-#     arguments: '--configuration $(buildConfiguration)'
-
-# - task: DotNetCoreCLI@2
-#   displayName: 'Publicación de artefactos'
-#   inputs:
-#     command: 'publish'
-#     publishWebProjects: true
-#     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-#     modifyOutputPath: false
-#     projects: '**/*.csproj'
-
-# - task: PublishPipelineArtifact@1
-#   displayName: 'Delivery de paquete'
-#   inputs:
-#     targetPath: '$(Build.ArtifactStagingDirectory)' 
-#     artifactName: 'drop'
 
