@@ -116,34 +116,34 @@ stages:
        
 
   
-#  - stage: deploytest
-#    displayName: 'Deploy a entorno de Test'
-#    dependsOn: buildandtest
-#    condition: succeeded()
-#    jobs:
-#    - deployment: 'deploydbtest'
-#      environment: 'Test'
-#      displayName: Deploy BD a Testing
-#      strategy:
-#       runOnce:
-#         deploy:
-#           steps:
-#             - checkout: none
-#             - task: DownloadPipelineArtifact@2
-#               inputs:
-#                 buildType: 'current'
-#                 itemPattern: '**/*.sql'
-#                 targetPath: '$(Pipeline.Workspace)'
-#             - task: SqlAzureDacpacDeployment@1
-#               inputs:
-#                 azureSubscription: 'votaciones'
-#                 AuthenticationType: 'server'
-#                 ServerName: 'dbsrv-dev-diit-estudiantes.database.windows.net'
-#                 DatabaseName: 'Votaciones'
-#                 SqlUsername: 'diit.admin.dev.sql'
-#                 SqlPassword: $(pwd)
-#                 deployType: 'SqlTask'
-#                 SqlFile: '$(sqlScript)'
-#                 IpDetectionMethod: 'AutoDetect'
+ - stage: deploytest
+   displayName: 'Deploy a entorno de Test'
+   dependsOn: buildandtest
+   condition: succeeded()
+   jobs:
+   - deployment: 'deploydbtest'
+     environment: 'Test'
+     displayName: Deploy BD a Testing
+     strategy:
+      runOnce:
+        deploy:
+          steps:
+            - checkout: none
+            - task: DownloadPipelineArtifact@2
+              inputs:
+                buildType: 'current'
+                itemPattern: '**/*.sql'
+                targetPath: '$(Pipeline.Workspace)'
+            - task: SqlAzureDacpacDeployment@1
+              inputs:
+                azureSubscription: 'votaciones'
+                AuthenticationType: 'server'
+                ServerName: 'dbsrv-dev-diit-estudiantes.database.windows.net'
+                DatabaseName: 'Votaciones'
+                SqlUsername: 'diit.admin.dev.sql'
+                SqlPassword: $(pwd)
+                deployType: 'SqlTask'
+                SqlFile: '$(Pipeline.Workspace)\migration.sql'
+                IpDetectionMethod: 'AutoDetect'
 
 
