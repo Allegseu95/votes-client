@@ -32,12 +32,12 @@ stages:
     - job: build
       displayName: 'Compilación'
       steps:
-        # - task: DotNetCoreCLI@2
-        #   displayName: 'Restauración de paquetes'
-        #   inputs:
-        #     command: 'restore'
-        #     projects: '$(solution)'
-        #     feedsToUse: 'select'
+        - task: DotNetCoreCLI@2
+          displayName: 'Restauración de paquetes'
+          inputs:
+            command: 'restore'
+            projects: '$(solution)'
+            feedsToUse: 'select'
         - task: VSBuild@1
           displayName: 'Compilación - $(Build.BuildNumber)'
           inputs:
