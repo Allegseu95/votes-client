@@ -16,7 +16,7 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   usr: 'SA'
-  db: 'Votaciones'
+  db: 'Escrutinio'
   srv: '(localdb)\MSSQLLocalDB'
   tPrj: '$(Build.SourcesDirectory)\Votaciones\Aplicacion\Aplicacion.csproj'
   sPrj: '$(Build.SourcesDirectory)\Votaciones\Cliente\Server\Cliente.Server.csproj'
@@ -127,7 +127,7 @@ stages:
                 azureSubscription: 'votaciones'
                 AuthenticationType: 'server'
                 ServerName: 'dbsrv-dev-diit-estudiantes.database.windows.net'
-                DatabaseName: '$(db)'
+                DatabaseName: 'Votaciones'
                 SqlUsername: 'diit.admin.dev.sql'
                 SqlPassword: $(pwd)
                 deployType: 'SqlTask'
