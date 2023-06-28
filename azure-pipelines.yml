@@ -89,6 +89,14 @@ stages:
             ServerName: '(localdb)\MSSQLLocalDB'
             DatabaseName: '$(db)'
             AuthScheme: 'windowsAuthentication'
+        - task: PowerShell@2
+          displayName: "Comprobación esquema"
+          inputs:
+            targetType: 'inline'
+            script: |
+              # Write your PowerShell commands here.
+
+              sqlcmd -S '$(srv)'  -Q 'use $(db) exec sp_tables;'
 
         # - task: DotNetCoreCLI@2
         #   displayName: 'Ejecución de tests'
