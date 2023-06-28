@@ -62,8 +62,8 @@ stages:
               SqlLocalDB.exe create $(db)  
               SqlLocalDB.exe sare $(db)  
               SqlLocalDB.exe start $(db)  
-              SqlLocalDB.exe info $(db)
-              sqlcmd -S $(srv)
+              SqlLocalDB.exe info 
+              # sqlcmd -S $(srv)
               # choco install sql-server-express
 
 
