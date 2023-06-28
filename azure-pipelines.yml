@@ -21,7 +21,8 @@ variables:
   srv: 'localhost'
   tPrj: '$(Build.SourcesDirectory)/Votaciones/Aplicacion/Aplicacion.csproj'
   sPrj: '$(Build.SourcesDirectory)/Votaciones/Cliente/Server/Cliente.Server.csproj'
-  sqlScript: '$(Build.ArtifactStagingDirectory)/SQL/migration.sql'
+  sqlScript: '$(Build.SourcesDirectory)/SQL/migration.sql' 
+  # '$(Build.ArtifactStagingDirectory)/SQL/migration.sql'
   ConnectionStrings.DefaultConnection: 'Data Source=$(srv);Initial Catalog=$(db);User ID=$(usr);Password=$(pwd);TrustServerCertificate=True'
 
 stages:
