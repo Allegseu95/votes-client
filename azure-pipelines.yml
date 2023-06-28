@@ -31,12 +31,17 @@ stages:
       displayName: 'Compilación'
       steps:
         # - checkout: none
-        - task: DotNetCoreCLI@2
-          displayName: 'Restauración de paquetes'
+        # - task: DotNetCoreCLI@2
+        #   displayName: 'Restauración de paquetes'
+        #   inputs:
+        #     command: 'restore'
+        #     projects: '$(solution)'
+        #     feedsToUse: 'select'
+        - task: NuGetToolInstaller@1
+
+        - task: NuGetCommand@2
           inputs:
-            command: 'restore'
-            projects: '$(solution)'
-            feedsToUse: 'select'
+            restoreSolution: '$(solution)'
         - task: VSBuild@1
           displayName: 'Compilación - $(Build.BuildNumber)'
           inputs:
