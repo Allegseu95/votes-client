@@ -139,7 +139,7 @@ stages:
                 SqlUsername: 'diit.admin.dev.sql'
                 SqlPassword: $(pwd)
                 deployType: 'SqlTask'
-                SqlFile: '$(Pipeline.Workspace)drop\sql\migration.sql'
+                SqlFile: '$(Pipeline.Workspace)\drop\sql\migration.sql'
                 IpDetectionMethod: 'AutoDetect'
 
 
