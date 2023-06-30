@@ -45,6 +45,18 @@ public class SubirArchivoBlobStorage : ISubirArchivo
         var result = await blob.UploadAsync(stream);
 
 
+       
+
+            if (result?.GetRawResponse().Status == 201) // Verificar que la carga fue exitosa
+            {
+                // Obtener la URL completa del blob
+                string rutaCompleta = blob.Uri.ToString();
+
+                // Utilizar la ruta completa según tus necesidades
+                Console.WriteLine("Ruta completa del archivo: " + rutaCompleta);
+            }
+
+
 
 
             //foreach (BlobItem koko in container.GetBlobs())
