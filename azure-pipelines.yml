@@ -7,136 +7,139 @@ trigger:
 - main
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: windows-latest
 
 name: $(MajorVersion).$(MinorVersion).$(Date:yy)$(DayOfYear)$(Rev:.rr)
 
 variables:
-  solution: '**/*.sln'
+  solution: '**\*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   usr: 'SA'
-  pwd: 'Y6Of084ft9-'
-  db: 'Escrutinio'
-  srv: 'localhost'
-  tPrj: '$(Build.SourcesDirectory)/Votaciones/Aplicacion/Aplicacion.csproj'
-  sPrj: '$(Build.SourcesDirectory)/Votaciones/Cliente/Server/Cliente.Server.csproj'
-  sqlScript: '$(Build.ArtifactStagingDirectory)/SQL/migration.sql'
+  db: 'Votaciones'
+  srv: '(localdb)\MSSQLLocalDB'
+  tPrj: '$(Build.SourcesDirectory)\Votaciones\Aplicacion\Aplicacion.csproj'
+  sPrj: '$(Build.SourcesDirectory)\Votaciones\Cliente\Server\Cliente.Server.csproj'
+  sqlScript: '$(Build.SourcesDirectory)\SQL\migration.sql' 
   ConnectionStrings.DefaultConnection: 'Data Source=$(srv);Initial Catalog=$(db);User ID=$(usr);Password=$(pwd);TrustServerCertificate=True'
 
-steps:
+stages:
+ - stage: 'buildandtest'
+   displayName: "Compilar y Ejecutar Tests"
+   jobs:
+    - job: build
+      displayName: 'Compilación'
+      steps:
+        - task: NuGetToolInstaller@1
+        - task: NuGetCommand@2
+          displayName: 'Restaurando paquetes'
+          inputs:
+            restoreSolution: '$(solution)'
+        - task: VSBuild@1
+          displayName: 'Compilación - $(Build.BuildNumber)'
+          inputs:
+            solution: '$(solution)'
+            msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)" /p:Version=$(Build.BuildNumber)'
+            platform: '$(buildPlatform)'
+            configuration: '$(buildConfiguration)'
+        - task: FileTransform@1
+          displayName: "Transformando appsettingsw"
+          inputs:
+            folderPath: '$(Pipeline.Workspace)\'
+            fileType: 'json'
+            targetFiles: '**\appsettings.json'
 
-- task: PowerShell@2
-  displayName: 'Descargando la imagen de sql server'
-  inputs:
-    targetType: 'inline'
-    script: 'docker pull mcr.microsoft.com/mssql/server:2022-latest'
+        - task: CopyFiles@2
+          inputs:
+            Contents: '$(Pipeline.Workspace)\**\appsettings.json'
+            TargetFolder: '$(Build.ArtifactStagingDirectory)\'
+        - task: PowerShell@2
+          displayName: "Creación de base de datos $(db)"
+          inputs:
+            targetType: 'inline'
+            script: |
+              # Write your PowerShell commands here.
+              SqlLocalDB.exe start MSSQLLocalDB
+              sqlcmd -S '$(srv)' -Q 'CREATE DATABASE $(db)'
+        - task: PowerShell@2
+          displayName: 'Instalar herramienta ef'
+          inputs:
+            targetType: 'inline'
+            script: 'dotnet tool install --global dotnet-ef'
+        - task: PowerShell@2
+          displayName: 'Crear script'
+          inputs:
+            targetType: 'inline'
+            script: 'dotnet ef migrations script --verbose --no-build -p $(tPrj) -s $(sPrj) -o $(sqlScript)  --idempotent --configuration $(BuildConfiguration)'    
+        - task: CopyFiles@2
+          inputs:
+            Contents: '$(sqlScript)'
+            TargetFolder: '$(build.artifactstagingdirectory)\'
+        - task: PublishBuildArtifacts@1
+          displayName: 'Publicación Web'
+          inputs:
+            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+            ArtifactName: 'drop'
+            publishLocation: 'Container'
+        # - task: SqlDacpacDeploymentOnMachineGroup@0
+        #   displayName: "Pubicación de esquema de BD"
+        #   inputs:
+        #     TaskType: 'sqlQuery'
+        #     SqlFile: '$(sqlScript)'
+        #     TargetMethod: 'server'
+        #     # ExecuteInTransaction: true
+        #     ServerName: '(localdb)\MSSQLLocalDB'
+        #     DatabaseName: '$(db)'
+        #     AuthScheme: 'windowsAuthentication'
+        # - task: PowerShell@2
+        #   displayName: "Comprobación esquema"
+        #   inputs:
+        #     targetType: 'inline'
+        #     script: |
+        #       # Write your PowerShell commands here.
 
-- task: PowerShell@2
-  displayName: 'Ejecutando la imagen'
-  inputs:
-    targetType: 'inline'
-    script: 'docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=$(pwd)" -p 1433:1433 --name sql1 --hostname sql1 -d mcr.microsoft.com/mssql/server:2022-latest'
+        #       sqlcmd -S '$(srv)'  -Q 'use $(db) exec sp_tables;'
 
-- task: PowerShell@2
-  displayName: 'Confirmar contenedor'
-  inputs:
-    targetType: 'inline'
-    script: 'docker ps -a'
+        # - task: DotNetCoreCLI@2
+        #   displayName: 'Ejecución de tests'
+        #   inputs:
+        #     command: 'test'
+        #     projects: '**\*.Test.csproj'
+        #     testRunTitle: 'Build Test'
+        #     workingDirectory: '$(System.DefaultWorkingDirectory)'
+        #     arguments: '--configuration $(buildConfiguration) --no-build --collect "Code coverage"'
 
+       
 
+  
+ - stage: deploytest
+   displayName: 'Deploy a entorno de Test'
+   dependsOn: buildandtest
+   condition: succeeded()
+   jobs:
+   - deployment: 'deploydbtest'
+     environment: 'Test'
+     displayName: Deploy BD a Testing
+     strategy:
+      runOnce:
+        deploy:
+          steps:
+            - checkout: none
+            - task: DownloadPipelineArtifact@2
+              inputs:
+                buildType: 'current'
+                itemPattern: '**\*.sql'
+                targetPath: '$(Pipeline.Workspace)'
+            - task: SqlAzureDacpacDeployment@1
+              inputs:
+                azureSubscription: 'votaciones'
+                AuthenticationType: 'server'
+                ServerName: 'dbsrv-dev-diit-estudiantes.database.windows.net'
+                DatabaseName: 'Votaciones'
+                SqlUsername: 'diit.admin.dev.sql'
+                SqlPassword: $(pwd)
+                deployType: 'SqlTask'
+                SqlFile: '$(Pipeline.Workspace)\drop\sql\migration.sql'
+                IpDetectionMethod: 'AutoDetect'
 
-- task: DotNetCoreCLI@2
-  displayName: 'Compilación de solución'
-  inputs:
-    command: 'build'
-    projects: '$(solution)'
-    arguments: '--configuration $(buildConfiguration)'
-
-- task: FileTransform@1
-  displayName: "Running File Transform Task"
-  inputs:
-    folderPath: '$(Pipeline.Workspace)/'
-    fileType: 'json'
-    targetFiles: '**/appsettings.json'
-
-- task: CopyFiles@2
-  inputs:
-    Contents: '$(Pipeline.Workspace)/**/appsettings.json'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)/'
-
-- task: PowerShell@2
-  displayName: "Creación de base de datos $(db)"
-  inputs:
-    targetType: 'inline'
-    script: |
-      # Write your PowerShell commands here.
-      # docker exec  sql1
-      /opt/mssql-tools/bin/sqlcmd -S localhost -U $(usr) -P $(pwd)  -Q 'create database $(db)'
-      
-- task: PowerShell@2
-  displayName: "Confirmar creación de base de datos $(db)"
-  inputs:
-    targetType: 'inline'
-    script: |
-      # Write your PowerShell commands here.
-      # docker exec  sql1
-      Write-Host 'Bases de datos instaladas'
-      /opt/mssql-tools/bin/sqlcmd -S localhost -U $(usr) -P $(pwd)  -Q 'SELECT Name from sys.databases;'
-- task: PowerShell@2
-  displayName: 'Instalar herramienta ef'
-  inputs:
-    targetType: 'inline'
-    script: 'dotnet tool install --global dotnet-ef'
-
-- task: PowerShell@2
-  displayName: 'Creando script de esquema de BD'
-  inputs:
-    targetType: 'inline'
-    script: 'dotnet ef migrations script --verbose --no-build -p $(tPrj) -s $(sPrj) -o $(sqlScript)  --idempotent --configuration $(BuildConfiguration)'
-
-- task: PowerShell@2
-  displayName: 'Modificando script de BD'
-  inputs:
-    targetType: 'inline'
-    script: '@("Use $(db)") +  (Get-Content $(sqlScript)) | Set-Content $(sqlScript)'
-- task: PowerShell@2
-  displayName: "Ejecutando la migración a la base $(db)"
-  inputs:
-    targetType: 'inline'
-    script: |
-      # Write your PowerShell commands here.
-      # docker exec  sql1
-      /opt/mssql-tools/bin/sqlcmd -S localhost -U $(usr) -P $(pwd) -i $(sqlScript)
-
-- task: PowerShell@2
-  displayName: "Confirmando la actualización de la migración en $(db)"
-  inputs:
-    targetType: 'inline'
-    script: |
-      # Write your PowerShell commands here.
-      # docker exec  sql1
-      /opt/mssql-tools/bin/sqlcmd -S localhost -U $(usr) -P $(pwd)  -Q 'use $(db) exec sp_tables;'
-
-- task: DotNetCoreCLI@2
-  displayName: 'Ejecución de tests'
-  inputs:
-    command: 'test'
-    projects: '**/*Test*.csproj'
-    arguments: '--configuration $(buildConfiguration)'
-
-- task: DotNetCoreCLI@2
-  displayName: 'Publicación de artefactos'
-  inputs:
-    command: 'publish'
-    publishWebProjects: true
-    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-    modifyOutputPath: false
-    projects: '**/*.csproj'
-
-- task: PublishPipelineArtifact@1
-  displayName: 'Delivery de paquete'
-  inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)' 
-    artifactName: 'drop'
 
