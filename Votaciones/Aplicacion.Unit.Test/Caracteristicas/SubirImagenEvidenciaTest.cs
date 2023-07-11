@@ -19,7 +19,6 @@ public class SubirImagenEvidenciaTest
     {
         var comando = new ArchivoComandoDTO()
         {
-            Path = textoLleno,
             Nombre = textoLleno,
             Contenido = textoLleno,
             Tamano = tamanoCorrecto,
@@ -27,7 +26,6 @@ public class SubirImagenEvidenciaTest
 
         var resultado = await validador.TestValidateAsync(comando);
 
-        resultado.ShouldNotHaveValidationErrorFor(x => x.Path);
         resultado.ShouldNotHaveValidationErrorFor(x => x.Nombre);
         resultado.ShouldNotHaveValidationErrorFor(x => x.Contenido);
         resultado.ShouldNotHaveValidationErrorFor(x => x.Tamano);
@@ -40,7 +38,6 @@ public class SubirImagenEvidenciaTest
 
         var resultado = await validador.TestValidateAsync(comando);
 
-        resultado.ShouldHaveValidationErrorFor(x => x.Path);
         resultado.ShouldHaveValidationErrorFor(x => x.Nombre);
         resultado.ShouldHaveValidationErrorFor(x => x.Contenido);
         resultado.ShouldHaveValidationErrorFor(x => x.Tamano);
@@ -51,7 +48,6 @@ public class SubirImagenEvidenciaTest
     {
         var comando = new ArchivoComandoDTO()
         {
-            Path = textoLleno,
             Nombre = textoLleno,
             Contenido = textoLleno,
             Tamano = tamanoCorrecto,
@@ -68,7 +64,6 @@ public class SubirImagenEvidenciaTest
     {
         var comando = new ArchivoComandoDTO()
         {
-            Path = textoVacio,
             Nombre = textoVacio,
             Contenido = textoVacio,
             Tamano = tamanoIncorrecto,
@@ -76,24 +71,7 @@ public class SubirImagenEvidenciaTest
         var resultado = await validador.TestValidateAsync(comando);
 
         resultado.IsValid.ShouldNotBe(true);
-        resultado.Errors.Count.ShouldBe(4);
-    }
-
-    [Fact]
-    public async Task SubirImagenEvidencia_ComandoNoValido_Path()
-    {
-        var comando = new ArchivoComandoDTO()
-        {
-            Path = textoVacio,
-            Nombre = textoLleno,
-            Contenido = textoLleno,
-            Tamano = tamanoCorrecto,
-        };
-
-        var resultado = await validador.TestValidateAsync(comando);      
-
-        resultado.IsValid.ShouldNotBe(true);
-        resultado.Errors.Count.ShouldBe(1);
+        resultado.Errors.Count.ShouldBe(3);
     }
 
     [Fact]
@@ -101,7 +79,6 @@ public class SubirImagenEvidenciaTest
     {
         var comando = new ArchivoComandoDTO()
         {
-            Path = textoLleno,
             Nombre = textoVacio,
             Contenido = textoLleno,
             Tamano = tamanoCorrecto,
@@ -118,7 +95,6 @@ public class SubirImagenEvidenciaTest
     {
         var comando = new ArchivoComandoDTO()
         {
-            Path = textoLleno,
             Nombre = textoLleno,
             Contenido = textoVacio,
             Tamano = tamanoCorrecto,
@@ -135,7 +111,6 @@ public class SubirImagenEvidenciaTest
     {
         var comando = new ArchivoComandoDTO()
         {
-            Path = textoLleno,
             Nombre = textoLleno,
             Contenido = textoLleno,
             Tamano = tamanoIncorrecto,

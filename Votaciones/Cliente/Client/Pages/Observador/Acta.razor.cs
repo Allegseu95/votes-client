@@ -42,8 +42,7 @@ public partial class Acta
 
             ArchivoComandoDTO archivo = new()
             {
-                Path = $"j{JRVId}p{PapeletaId}",
-                Nombre = image.Name,
+                Nombre = $"J{JRVId}P{PapeletaId}.jpg",
                 Contenido = Convert.ToBase64String(await fileContent.ReadAsByteArrayAsync()),
                 Tamano = (int)image.Size,
             };

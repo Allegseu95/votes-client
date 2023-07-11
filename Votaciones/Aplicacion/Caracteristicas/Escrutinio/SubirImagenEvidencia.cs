@@ -12,7 +12,6 @@ public class SubirImagenEvidencia
     {
         public ComandoValidacion()
         {
-            RuleFor(x => x.Path).NotEmpty();
             RuleFor(x => x.Nombre).NotEmpty();
             RuleFor(x => x.Contenido).NotEmpty();
             RuleFor(x => x.Tamano).InclusiveBetween(1, 1024 * 1024 * 8);
@@ -32,7 +31,7 @@ public class SubirImagenEvidencia
         public async Task<RespuestaDTO> Handle(ArchivoComandoDTO request,
             CancellationToken cancellationToken)
             => this.mapper.Map<RespuestaDTO>(
-                await this.subirArchivo.Ejecutar(request.Path, request.Nombre, request.Contenido));
+                await this.subirArchivo.Ejecutar(request.Nombre, request.Contenido));
     }
 
     public class MapRespuesta : Profile
@@ -40,7 +39,7 @@ public class SubirImagenEvidencia
         public MapRespuesta()
         {
             CreateMap<ArchivoRespuestaDTO, RespuestaDTO>()
-                .ConstructUsing(e => new RespuestaDTO(e.Ruta, e.Estado, e.Cantidad));
+                .ConstructUsing(e => new RespuestaDTO(e.Respuesta, e.Estado, e.Estado ? 1 : 0));
         }
     }
 }
