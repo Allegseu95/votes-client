@@ -1,8 +1,9 @@
 ﻿@page "/observador/papeletas/{JRVId:int}"
 @inject HttpClient Http
+@attribute [Authorize]
+@layout MainLayout
 
 <PageTitle>Papeletas</PageTitle>
-
 
 <MudContainer Fixed="true" Class="pa-4">
 

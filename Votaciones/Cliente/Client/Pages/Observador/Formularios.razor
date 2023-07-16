@@ -1,0 +1,32 @@
+﻿@page "/observador/formularios"
+@attribute [Authorize]
+@layout MainLayout
+
+<PageTitle>Formularios</PageTitle>
+
+<MudText Typo="Typo.h3" Align="Align.Center" Class="mt-10">Formularios</MudText>
+
+<MudText Typo="Typo.body1" Align="Align.Center">Aqui podrá llenar los siguientes formularios</MudText>
+
+<MudPaper Class="d-flex flex-column flex-grow-1 gap-4 py-5 px-10 mt-5" Elevation="0">
+    <MudButton Href=""
+               Variant="Variant.Outlined"
+               EndIcon="@Icons.Material.Filled.Folder"
+               Color="Color.Tertiary">
+        Formulario 1
+    </MudButton>
+
+    <MudButton Href=""
+               Variant="Variant.Filled"
+               EndIcon="@Icons.Material.Filled.People"
+               Color="Color.Tertiary">
+        Formulario 2
+    </MudButton>
+
+    <MudButton Href=""
+               Variant="Variant.Filled"
+               EndIcon="@Icons.Material.Filled.CarCrash"
+               Color="Color.Tertiary">
+        Formuklario 3
+    </MudButton>
+</MudPaper>

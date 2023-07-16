@@ -1,8 +1,11 @@
 ﻿@page "/observador/listado"
 @inject HttpClient Http
+@attribute [Authorize]
+@inject IAccessTokenProvider AccessTokenProvider
+@inject ISnackbar Snackbar
+@layout MainLayout
 
 <PageTitle>JRVS Asignadas</PageTitle>
-
 
 <MudContainer Fixed="true" Class="pa-4">
 
@@ -10,15 +13,14 @@
         <MudText Align="Align.Center" Typo="Typo.h6">@Titulo</MudText>
         @if (ListaLlena)
         {
-            <MudText Align="Align.Center" Typo="Typo.body2">Aquí veras el listado de jrvs que te fueron asginadas a observar</MudText>
+            <MudText Align="Align.Center" Typo="Typo.body2">Bienvenido/a @Usuario.Nombre @Usuario.Apellido, Aquí veras el listado de jrvs que te fueron asginadas a observar</MudText>
         }
-
     </MudPaper>
 
     <MudDivider DividerType="DividerType.Middle" Class="mt-4 mb-2" />
 
     <MudContainer Width="100%" Class="pa-2">
-        @if (jrvs == null)
+        @if (JRVS == null)
         {
             <MudText Align="Align.Start" Typo="Typo.caption">Cargando...</MudText>
 
@@ -28,7 +30,7 @@
             @if (ListaLlena)
             {
                 <MudGrid Spacing="2" Justify="Justify.Center">
-                    @foreach (var jrv in jrvs)
+                    @foreach (var jrv in JRVS)
                     {
                         <MudItem xs="12">
                             <MudLink Href="@($"/observador/papeletas/{jrv.Id}")" Underline="Underline.None">
@@ -51,5 +53,3 @@
         }
     </MudContainer>
 </MudContainer>
-
-

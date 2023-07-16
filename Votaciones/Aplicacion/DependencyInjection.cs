@@ -1,9 +1,11 @@
-﻿using Aplicacion.Helper;
+﻿using Aplicacion.Dominio.Entidades.Escrutinio;
+using Aplicacion.Helper;
 using Aplicacion.Persistencia;
 using Aplicacion.Servicios.Implementaciones;
 using Aplicacion.Servicios.Intefaces;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,6 +37,15 @@ public static class DependencyInjection
             options.UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll);
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         }, ServiceLifetime.Transient);
+
+        services.AddDefaultIdentity<UsuarioCredencial>(options => options.SignIn.RequireConfirmedAccount = true)
+        .AddEntityFrameworkStores<EscrutinioDbContext>();
+
+        services.AddIdentityServer()
+            .AddApiAuthorization<UsuarioCredencial, EscrutinioDbContext>();
+
+        services.AddAuthentication()
+            .AddIdentityServerJwt();
 
         services.AddHelper();
         return services;

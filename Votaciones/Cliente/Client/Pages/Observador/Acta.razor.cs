@@ -132,6 +132,11 @@ public partial class Acta
 
     public void MostrarAlerta(string mensaje, Severity tipo) => Snackbar.Add(mensaje, tipo);
 
+    public void Regresar()
+    {
+        NavigationManager.NavigateTo($"/observador/papeletas/{JRVId}");
+    }
+
     protected override async Task OnInitializedAsync()
     {
         var result = await Http.GetFromJsonAsync<List<CandidatoDTO>>($"api/candidatos/{PapeletaId}");

@@ -2,6 +2,8 @@
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 @inject ISnackbar Snackbar
+@attribute [Authorize]
+@layout MainLayout
 
 <PageTitle>Registrar Acta</PageTitle>
 
@@ -62,7 +64,7 @@
                 {
                     <MudItem xs="2" Class="pa-0 d-flex align-center justify-center">
                         <MudImage Src="@candidato.Imagen" Width="40" Height="40"
-                          Alt="@candidato.Nombre" Elevation="6" Class="rounded-circle" />
+                                  Alt="@candidato.Nombre" Elevation="6" Class="rounded-circle" />
                     </MudItem>
 
                     <MudItem xs="7" Class="pa-0 d-flex align-center justify-center">
@@ -71,7 +73,7 @@
 
                     <MudItem xs="3" Class="pa-0 d-flex align-center">
                         <MudNumericField @bind-Value="@candidato.Votos" Immediate="true" Variant="Variant.Outlined"
-                                 Margin="Margin.Dense" Min="0" Max="@CantidadVotantes" Step="5" />
+                                         Margin="Margin.Dense" Min="0" Max="@CantidadVotantes" Step="5" />
                     </MudItem>
                 }
             </MudGrid>
@@ -110,7 +112,6 @@
             }
         </MudButton>
 
-
         <MudButton Disabled="@procesando" FullWidth Size="Size.Medium" Variant="Variant.Filled" Color="Color.Primary"
                    StartIcon="@Icons.Material.Filled.SendAndArchive" OnClick="RegistrarActa">
             @if (procesando)
@@ -120,8 +121,13 @@
             }
             else
             {
-                <MudText>REGISTRAR ACTA</MudText>
+                <MudText>Registrar Acta</MudText>
             }
+        </MudButton>
+
+        <MudButton FullWidth Size="Size.Medium" Variant="Variant.Outlined" Class="mt-3" Color="Color.Error"
+                   StartIcon="@Icons.Material.Filled.Cancel" OnClick="Regresar">
+            <MudText>Cancelar</MudText>
         </MudButton>
     </MudPaper>
 </MudContainer>

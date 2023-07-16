@@ -1,23 +1,26 @@
 ﻿using Aplicacion.Dominio.Entidades.Escrutinio;
 using Aplicacion.Helper.Dominio.Comunes;
 using Aplicacion.Persistencia.Configurations;
+using Duende.IdentityServer.EntityFramework.Options;
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.Extensions.Options;
 
 namespace Aplicacion.Persistencia;
-public partial class EscrutinioDbContext : DbContext
+public partial class EscrutinioDbContext : ApiAuthorizationDbContext<UsuarioCredencial>
 {
-    public EscrutinioDbContext(DbContextOptions<EscrutinioDbContext> options) : base(options)
-    {
-    }
-
-    public EscrutinioDbContext()
+    public EscrutinioDbContext(
+        DbContextOptions<EscrutinioDbContext> options,
+        IOptions<OperationalStoreOptions> operationalStoreOptions)
+        : base(options, operationalStoreOptions)
     {
     }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => base.OnConfiguring(optionsBuilder);
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfiguration(new ActaConfiguration());
         modelBuilder.ApplyConfiguration(new CandidatoConfiguration());
         modelBuilder.ApplyConfiguration(new DetalleActaConfiguration());
@@ -42,7 +45,7 @@ public partial class EscrutinioDbContext : DbContext
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         await GestionarAuditoria();
-        return await base.SaveChangesAsync(cancellationToken);  
+        return await base.SaveChangesAsync(cancellationToken);
     }
 
     private async Task GestionarAuditoria()

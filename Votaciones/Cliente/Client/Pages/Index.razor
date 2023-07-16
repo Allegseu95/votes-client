@@ -1,14 +1,33 @@
-﻿@page "/"
-
+﻿@using Cliente.Client.Shared.Components
+@inherits LayoutComponentBase
+@page "/"
 
 <PageTitle>Inicio</PageTitle>
 
-<MudText Typo="Typo.h1">Hola mundo dev !</MudText>
+<AuthorizeView>
+    <Authorized>
+        <RedirectObservador />
+    </Authorized>
 
-<MudText Typo="Typo.body1">Bienvenido a la aplicación de Conteo de Votos</MudText>
+    <NotAuthorized>
+        <MudText Typo="Typo.h3" Align="Align.Center" Class="mt-10">Bienvenido/a!</MudText>
 
+        <MudText Typo="Typo.body1" Align="Align.Center">A la aplicación de Registro de Votos</MudText>
 
-<MudLink Href="/login">
+        <MudPaper Class="d-flex flex-column flex-grow-1 gap-4 py-5 px-10 mt-10" Elevation="0">
+            <MudButton Href="/observador/listado"
+                       Variant="Variant.Outlined"
+                       EndIcon="@Icons.Material.Filled.Login"
+                       Color="Color.Tertiary">
+                Inicia Sesión
+            </MudButton>
 
-    Ir al Login
-</MudLink>
+            <MudButton Href="authentication/register"
+                       Variant="Variant.Filled"
+                       EndIcon="@Icons.Material.Filled.AppRegistration"
+                       Color="Color.Tertiary">
+                Regístrate
+            </MudButton>
+        </MudPaper>
+    </NotAuthorized>
+</AuthorizeView>

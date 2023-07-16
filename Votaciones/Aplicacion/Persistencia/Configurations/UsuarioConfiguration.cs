@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Aplicacion.Persistencia.Configurations;
 public partial class UsuarioConfiguration : IEntityTypeConfiguration<Usuario>
 {
-    public void Configure(EntityTypeBuilder<Usuario> entity) 
+    public void Configure(EntityTypeBuilder<Usuario> entity)
     {
         entity.HasKey(e => e.Id);
 
@@ -28,20 +28,15 @@ public partial class UsuarioConfiguration : IEntityTypeConfiguration<Usuario>
             .IsUnicode(true)
             .IsRequired(false);
 
-        entity.Property(e => e.Celular)
+        entity.Property(e => e.Cedula)
             .HasMaxLength(10)
             .IsUnicode(true)
             .IsRequired(true);
 
         entity.Property(e => e.Email)
-            .HasMaxLength(200)
-            .IsUnicode(true)
-            .IsRequired(true);
-
-        entity.Property(e => e.Contrasenia)
-            .HasMaxLength(200)
-            .IsUnicode(true)
-            .IsRequired(true);
+           .HasMaxLength(300)
+           .IsUnicode(true)
+           .IsRequired(true);
 
         entity.Property(e => e.Creado)
            .HasColumnType("datetime2")

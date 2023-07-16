@@ -1,12 +1,42 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
-    <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>
-        <FocusOnNavigate RouteData="@routeData" Selector="h1"/>
-    </Found>
-    <NotFound>
-        <PageTitle>Página no encontrada</PageTitle>
-        <LayoutView Layout="@typeof(MainLayout)">
-            <MudText Typo="Typo.h1">Lo sentimos, la página que solicita no existe o está inhabilitada temporalmente.</MudText>
-        </LayoutView>
-    </NotFound>
-</Router>
+﻿@using Cliente.Client.Shared.Components
+@inherits LayoutComponentBase
+
+<CascadingAuthenticationState>
+
+    <Router AppAssembly="@typeof(App).Assembly">
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(GeneralLayout)">
+
+                <NotAuthorized>
+                    @if (context.User.Identity?.IsAuthenticated != true)
+                    {
+                        <RedirectAutenticacion />
+                    }
+                    else
+                    {
+                        <MudText Typo="Typo.h3" Align="Align.Center" Color="Color.Info">No estas autorizado !</MudText>
+                    }
+
+                </NotAuthorized>
+            </AuthorizeRouteView>
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        </Found>
+
+        <NotFound>
+            <PageTitle>Página no encontrada</PageTitle>
+            <LayoutView Layout="@typeof(GeneralLayout)">
+                <MudText Typo="Typo.h3" Align=Align.Center Class="pa-5">Lo sentimos, la página que solicita no existe o está inhabilitada temporalmente.</MudText>
+
+                <MudPaper Class="d-flex flex-column flex-grow-1 py-5 px-10" Elevation="0">
+                    <MudButton Href="/"
+                               Variant="Variant.Outlined"
+                               EndIcon="@Icons.Material.Filled.Home"
+                               Color="Color.Tertiary">
+                        Volver al Inicio
+                    </MudButton>
+                </MudPaper>
+            </LayoutView>
+        </NotFound>
+    </Router>
+
+</CascadingAuthenticationState>
