@@ -10,6 +10,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddAplicacion(builder.Configuration);
 builder.Services.AddSingleton<IServicioUsuarioActual, ServicioUsuarioActual>();
+builder.Services.AddHttpsRedirection(o => o.HttpsPort = 443);
 
 var app = builder.Build();
 
@@ -31,9 +32,9 @@ app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 
 app.UseRouting();
-
-app.UseIdentityServer();
 app.UseAuthentication();
+app.UseIdentityServer();
+
 app.UseAuthorization();
 
 app.MapRazorPages();
