@@ -5,7 +5,9 @@ using Aplicacion.Servicios.Implementaciones;
 using Aplicacion.Servicios.Intefaces;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,7 +27,6 @@ public static class DependencyInjection
         services.AddLogging();
 
 
-
         //if (bool.Parse(configuration.GetSection("UseInMemoryDatabase").Value))
         //    services.AddDbContext<SGAPContext>(options =>
         //    {
@@ -39,11 +40,16 @@ public static class DependencyInjection
         }, ServiceLifetime.Transient);
 
         services.AddDefaultIdentity<UsuarioCredencial>(options => options.SignIn.RequireConfirmedAccount = true)
-        .AddEntityFrameworkStores<EscrutinioDbContext>();
+            .AddEntityFrameworkStores<EscrutinioDbContext>();
 
         services.AddIdentityServer()
             .AddApiAuthorization<UsuarioCredencial, EscrutinioDbContext>();
-
+        services.Configure<JwtBearerOptions>(
+            IdentityServerJwtConstants.IdentityServerJwtBearerScheme,
+            options =>
+            {
+                options.Authority = configuration.GetSection("Host").Value;
+            });
         services.AddAuthentication()
             .AddIdentityServerJwt();
 
