@@ -114,19 +114,19 @@ stages:
                 deployType: 'SqlTask'
                 SqlFile: '$(Pipeline.Workspace)\drop\sql\migration.sql'
                 IpDetectionMethod: 'AutoDetect'
-   - deployment: 'deploywebtest'
-     environment: 'Test'
-     displayName: Deploy Web a Testing
-     strategy:
-        runOnce:
-          deploy:
-            steps:
-              - checkout: none
-              - task: DownloadPipelineArtifact@2
-                inputs:
-                  buildType: 'current'
-                  itemPattern: '**\*.zip'
-                  targetPath: '$(Pipeline.Workspace)'
+  #  - deployment: 'deploywebtest'
+  #    environment: 'Test'
+  #    displayName: Deploy Web a Testing
+  #    strategy:
+  #       runOnce:
+  #         deploy:
+  #           steps:
+  #             - checkout: none
+  #             - task: DownloadPipelineArtifact@2
+  #               inputs:
+  #                 buildType: 'current'
+  #                 itemPattern: '**\*.zip'
+  #                 targetPath: '$(Pipeline.Workspace)'
                  # - task: AzureWebApp@1
               #   inputs:
               #     azureSubscription: 'votaciones'
