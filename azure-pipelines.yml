@@ -114,8 +114,9 @@ stages:
                 deployType: 'SqlTask'
                 SqlFile: '$(Pipeline.Workspace)\drop\sql\migration.sql'
                 IpDetectionMethod: 'AutoDetect'
-   - deployment: 'deploydbtest'
+   - deployment: 'deploywebtest'
      environment: 'Test'
+     dependsOn: :'deploydbtest'
      displayName: Deploy Web a Testing
      strategy:
         runOnce:
