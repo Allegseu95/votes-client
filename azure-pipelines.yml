@@ -116,7 +116,6 @@ stages:
                 IpDetectionMethod: 'AutoDetect'
    - deployment: 'deploywebtest'
      environment: 'Test'
-     dependsOn: :'deploydbtest'
      displayName: Deploy Web a Testing
      strategy:
         runOnce:
