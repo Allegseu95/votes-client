@@ -135,7 +135,7 @@ stages:
                   deployToSlotOrASE: true
                   resourceGroupName: 'rg-dev-diit-estudiantes-votaciones'
                   slotName: 'production'
-                  package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+                  package: '$(Pipeline.Workspace)\drop\Cliente.Server.zip'
                   appSettings: '-ConnectionStrings.BlobStorageConnection $(Blob) -ConnectionStrings.DefaultConnection Server=$(sqlsrv),1433;Initial Catalog=$(sqldb);Persist Security Info=False;User ID=$(sqlusr);Password=$(pwd);MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
                   deploymentMethod: 'auto'
 
