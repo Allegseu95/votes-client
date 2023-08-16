@@ -81,34 +81,7 @@ stages:
             PathtoPublish: '$(Build.ArtifactStagingDirectory)'
             ArtifactName: 'drop'
             publishLocation: 'Container'
-        # - task: SqlDacpacDeploymentOnMachineGroup@0
-        #   displayName: "Pubicación de esquema de BD"
-        #   inputs:
-        #     TaskType: 'sqlQuery'
-        #     SqlFile: '$(sqlScript)'
-        #     TargetMethod: 'server'
-        #     # ExecuteInTransaction: true
-        #     ServerName: '(localdb)\MSSQLLocalDB'
-        #     DatabaseName: '$(db)'
-        #     AuthScheme: 'windowsAuthentication'
-        # - task: PowerShell@2
-        #   displayName: "Comprobación esquema"
-        #   inputs:
-        #     targetType: 'inline'
-        #     script: |
-        #       # Write your PowerShell commands here.
-
-        #       sqlcmd -S '$(srv)'  -Q 'use $(db) exec sp_tables;'
-
-        # - task: DotNetCoreCLI@2
-        #   displayName: 'Ejecución de tests'
-        #   inputs:
-        #     command: 'test'
-        #     projects: '**\*.Test.csproj'
-        #     testRunTitle: 'Build Test'
-        #     workingDirectory: '$(System.DefaultWorkingDirectory)'
-        #     arguments: '--configuration $(buildConfiguration) --no-build --collect "Code coverage"'
-
+            
        
 
   
@@ -134,12 +107,35 @@ stages:
               inputs:
                 azureSubscription: 'votaciones'
                 AuthenticationType: 'server'
-                ServerName: 'dbsrv-dev-diit-estudiantes.database.windows.net'
-                DatabaseName: 'Votaciones'
-                SqlUsername: 'diit.admin.dev.sql'
+                ServerName: '$(sqlsrv)'
+                DatabaseName: '$(sqldb)'
+                SqlUsername: '$(sqlusr)'
                 SqlPassword: $(pwd)
                 deployType: 'SqlTask'
                 SqlFile: '$(Pipeline.Workspace)\drop\sql\migration.sql'
                 IpDetectionMethod: 'AutoDetect'
-
+   - deployment: 'deploydbtest'
+     environment: 'Test'
+     displayName: Deploy Web a Testing
+     strategy:
+        runOnce:
+          deploy:
+            steps:
+              - checkout: none
+              - task: DownloadPipelineArtifact@2
+                inputs:
+                  buildType: 'current'
+                  itemPattern: '**\*.zip'
+                  targetPath: '$(Pipeline.Workspace)'
+              - task: AzureWebApp@1
+                inputs:
+                  azureSubscription: 'votaciones'
+                  appType: 'webApp'
+                  appName: 'dev-diit-votaciones'
+                  deployToSlotOrASE: true
+                  resourceGroupName: 'rg-dev-diit-estudiantes-votaciones'
+                  slotName: 'production'
+                  package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+                  appSettings: '-ConnectionStrings.BlobStorageConnection $(Blob) -ConnectionStrings.DefaultConnection Server=$(sqlsrv),1433;Initial Catalog=$(sqldb);Persist Security Info=False;User ID=$(sqlusr);Password=$(pwd);MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
+                  deploymentMethod: 'auto'
 
