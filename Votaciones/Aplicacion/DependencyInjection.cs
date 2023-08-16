@@ -39,6 +39,7 @@ public static class DependencyInjection
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         }, ServiceLifetime.Transient);
 
+        services.AddDatabaseDeveloperPageExceptionFilter();
         services.AddDefaultIdentity<UsuarioCredencial>(options => options.SignIn.RequireConfirmedAccount = true)
             .AddEntityFrameworkStores<EscrutinioDbContext>();
 

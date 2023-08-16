@@ -33,8 +33,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthentication();
 app.UseIdentityServer();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
