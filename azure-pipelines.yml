@@ -127,15 +127,26 @@ stages:
                   buildType: 'current'
                   itemPattern: '**\*.zip'
                   targetPath: '$(Pipeline.Workspace)'
-              - task: AzureWebApp@1
+                 # - task: AzureWebApp@1
+              #   inputs:
+              #     azureSubscription: 'votaciones'
+              #     appType: 'webApp'
+              #     appName: 'dev-diit-votaciones'
+              #     deployToSlotOrASE: true
+              #     resourceGroupName: 'rg-dev-diit-estudiantes-votaciones'
+              #     slotName: 'production'
+              #     package: '$(Pipeline.Workspace)\drop\Cliente.Server.zip'
+              #     appSettings: '-ConnectionStrings.BlobStorageConnection $(Blob) -ConnectionStrings.DefaultConnection Server=$(sqlsrv),1433;Initial Catalog=$(sqldb);Persist Security Info=False;User ID=$(sqlusr);Password=$(pwd);MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
+              #     deploymentMethod: 'auto'
+
+              - task: AzureRmWebAppDeployment@4
                 inputs:
+                  ConnectionType: 'AzureRM'
                   azureSubscription: 'votaciones'
                   appType: 'webApp'
-                  appName: 'dev-diit-votaciones'
+                  WebAppName: 'dev-diit-votaciones'
                   deployToSlotOrASE: true
-                  resourceGroupName: 'rg-dev-diit-estudiantes-votaciones'
-                  slotName: 'production'
-                  package: '$(Pipeline.Workspace)\drop\Cliente.Server.zip'
-                  appSettings: '-ConnectionStrings.BlobStorageConnection $(Blob) -ConnectionStrings.DefaultConnection Server=$(sqlsrv),1433;Initial Catalog=$(sqldb);Persist Security Info=False;User ID=$(sqlusr);Password=$(pwd);MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
-                  deploymentMethod: 'auto'
-
+                  ResourceGroupName: 'rg-dev-diit-estudiantes-votaciones'
+                  SlotName: 'production'
+                  packageForLinux: '$(Pipeline.Workspace)\drop\Cliente.Server.zip'
+                  AppSettings: '-ConnectionStrings.BlobStorageConnection $(Blob) -ConnectionStrings.DefaultConnection Server=$(sqlsrv),1433;Initial Catalog=$(sqldb);Persist Security Info=False;User ID=$(sqlusr);Password=$(pwd);MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
