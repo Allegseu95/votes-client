@@ -139,14 +139,14 @@ stages:
               #     appSettings: '-ConnectionStrings.BlobStorageConnection $(Blob) -ConnectionStrings.DefaultConnection Server=$(sqlsrv),1433;Initial Catalog=$(sqldb);Persist Security Info=False;User ID=$(sqlusr);Password=$(pwd);MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
               #     deploymentMethod: 'auto'
 
-              - task: AzureRmWebAppDeployment@4
-                inputs:
-                  ConnectionType: 'AzureRM'
-                  azureSubscription: 'votaciones'
-                  appType: 'webApp'
-                  WebAppName: 'dev-diit-votaciones'
-                  deployToSlotOrASE: true
-                  ResourceGroupName: 'rg-dev-diit-estudiantes-votaciones'
-                  SlotName: 'production'
-                  packageForLinux: '$(Pipeline.Workspace)\drop\Cliente.Server.zip'
-                  AppSettings: '-ConnectionStrings.BlobStorageConnection $(Blob) -ConnectionStrings.DefaultConnection Server=$(sqlsrv),1433;Initial Catalog=$(sqldb);Persist Security Info=False;User ID=$(sqlusr);Password=$(pwd);MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
+              # - task: AzureRmWebAppDeployment@4
+              #   inputs:
+              #     ConnectionType: 'AzureRM'
+              #     azureSubscription: 'votaciones'
+              #     appType: 'webApp'
+              #     WebAppName: 'dev-diit-votaciones'
+              #     deployToSlotOrASE: true
+              #     ResourceGroupName: 'rg-dev-diit-estudiantes-votaciones'
+              #     SlotName: 'production'
+              #     packageForLinux: '$(Pipeline.Workspace)\drop\Cliente.Server.zip'
+              #     AppSettings: '-ConnectionStrings.BlobStorageConnection $(Blob) -ConnectionStrings.DefaultConnection Server=$(sqlsrv),1433;Initial Catalog=$(sqldb);Persist Security Info=False;User ID=$(sqlusr);Password=$(pwd);MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
