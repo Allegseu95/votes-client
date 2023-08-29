@@ -8,7 +8,7 @@ public partial class Candidato : IEntity, IAuditableEntity
     public string Nombre { get; set; } = string.Empty;
     public string Apellido { get; set; } = string.Empty;
     public string Genero { get; set; } = string.Empty;
-    public DateTime FechaNacimiento { get; set; }
+    public DateTime? FechaNacimiento { get; set; }
     public string OrganizacionPolitica { get; set; } = string.Empty;
     public string Imagen { get; set; } = string.Empty;
     public DateTime Creado { get; set; }

@@ -12,7 +12,7 @@ public partial class CandidatoConfiguration : IEntityTypeConfiguration<Candidato
         entity.Property(e => e.Id)
             .HasColumnName("CandidatoId")
             .IsRequired(true);
-        
+
         entity.Property(e => e.PapeletaId)
              .IsRequired(true);
 
@@ -29,11 +29,11 @@ public partial class CandidatoConfiguration : IEntityTypeConfiguration<Candidato
         entity.Property(e => e.Genero)
             .HasMaxLength(20)
             .IsUnicode(true)
-            .IsRequired(true);
+            .IsRequired(false);
 
         entity.Property(e => e.FechaNacimiento)
          .HasColumnType("date")
-         .IsRequired(true);
+         .IsRequired(false);
 
         entity.Property(e => e.OrganizacionPolitica)
            .HasMaxLength(500)
